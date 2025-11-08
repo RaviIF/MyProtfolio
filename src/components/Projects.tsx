@@ -23,7 +23,7 @@ const Projects = () => {
     {
       title: "Clean the City",
       description: "A black-hole-based mobile game for environmental cleanup gameplay.",
-      role: "Unity Developer",
+      role: "Jr. Unity Developer",
       responsibilities: "Ad integration, UI/UX improvements, shadow and lighting tweaks",
       tech: ["Unity3D", "C#"],
       category: "Mobile Game"
@@ -31,7 +31,7 @@ const Projects = () => {
     {
       title: "Alien Runner",
       description: "PC motion-controlled game using body tracking with Mediapipe.",
-      role: "Game Developer",
+      role: "Jr. Game Developer",
       responsibilities: "Motion detection system development",
       tech: ["Unity3D", "C#", "Mediapipe"],
       category: "PC Game"
@@ -39,7 +39,7 @@ const Projects = () => {
     {
       title: "Enter If You Dare",
       description: "Gesture-based ghost elimination game with immersive interactive controls.",
-      role: "Game Developer",
+      role: "Jr. Game Developer",
       responsibilities: "Gesture detection system development",
       tech: ["Unity3D", "C#", "Mediapipe"],
       category: "Game"
