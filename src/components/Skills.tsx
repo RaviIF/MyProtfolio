@@ -21,7 +21,7 @@ const Skills = () => {
     {
       icon: Cpu,
       title: "Tools & Hardware",
-      skills: ["Figma (UI Design)", "Raspberry Pi", "HoloLens", "Image Processing"]
+      skills: ["Figma (UI Design)", "Raspberry Pi", "HoloLens", "Image Processing","VR"]
     }
   ];
 
