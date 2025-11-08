@@ -25,7 +25,7 @@ const Hero = () => {
           <h1 className="text-6xl md:text-8xl font-bold mb-6">
             Ravi Patel
             <span className="inline-block ml-4">
-              <ArrowRight className="w-12 h-12 md:w-16 md:h-16 text-primary animate-pulse" />
+              <ArrowDown className="w-12 h-12 md:w-16 md:h-16 text-primary animate-pulse" />
             </span>
           </h1>
 
