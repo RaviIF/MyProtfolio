@@ -16,7 +16,7 @@ const Skills = () => {
     {
       icon: Smartphone,
       title: "Technologies & SDKs",
-      skills: ["Mediapipe", "Vuforia", "Agora SDK", "OpenXR", "MRTK", "In-App Purchases"]
+      skills: ["Mediapipe", "Vuforia", "Agora SDK", "OpenXR", "MRTK", "In-App Purchases","Photon"]
     },
     {
       icon: Cpu,
