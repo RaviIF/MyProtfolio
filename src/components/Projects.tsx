@@ -59,6 +59,14 @@ const Projects = () => {
       responsibilities: "Streaming setup, camera integration",
       tech: ["Unity3D", "C#", "MRTK", "HoloLens"],
       category: "Medical XR"
+    },
+    {
+      title: "Streaming Application for OT (HoloLens)",
+      description: "Real-time video streaming and camera capture system using MRTK for HoloLens in operating theaters.",
+      role: "Jr. Game Developer",
+      responsibilities: "Streaming setup, camera integration",
+      tech: ["Unity3D", "C#", "MRTK", "HoloLens"],
+      category: "Medical XR"
     }
   ];
 
