@@ -61,12 +61,12 @@ const Projects = () => {
       category: "Medical XR"
     },
     {
-      title: "Streaming Application for OT (HoloLens)",
-      description: "Real-time video streaming and camera capture system using MRTK for HoloLens in operating theaters.",
-      role: "Jr. Game Developer",
-      responsibilities: "Streaming setup, camera integration",
-      tech: ["Unity3D", "C#", "MRTK", "HoloLens"],
-      category: "Medical XR"
+      title: "VR Boat Simulation",
+      description: "A virtual reality simulation designed to train boat pilots in transitioning from small vessels to large cargo ships. The project focuses on delivering realistic navigation experiences and accurate maritime environments for effective pilot training.",
+      role: "Jr. Unity Developer",
+      responsibilities: "Realist Water Effecr, Boat Physics",
+      tech: ["Unity3D", "C#", "VR"],
+      category: "Training Software"
     }
   ];
 
