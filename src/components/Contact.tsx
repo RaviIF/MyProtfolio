@@ -29,11 +29,23 @@ const Contact = () => {
       };
        // 1️⃣ Send message to you
       await emailjs.send(
-        'service_abz7wqa',
+        'service_4tcy277',
         'template_w51obvo',
         templateParams,
         'kw9uQYqcvZDSGm55g'
       );
+      // 2️⃣ Send auto-reply to user
+      await emailjs.send(
+        "service_4tcy277",          // same service ID
+        "template_auto_reply",      // your new auto-reply template ID
+        {
+          from_name: "Ravi Patel", // your name
+          to_name: formData.name,
+          to_email: formData.email,
+        },
+        "kw9uQYqcvZDSGm55g"        // your public key
+      );
+      
       toast({
         title: "Message sent!",
         description: "Thank you for reaching out. I'll get back to you soon.",
