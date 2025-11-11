@@ -39,9 +39,9 @@ const Contact = () => {
         "service_4tcy277",          // same service ID
         "template_c02ya2s",      // your new auto-reply template ID
         {
-          from_name: "Ravi Patel", // your name
           to_name: formData.name,
           to_email: formData.email,
+          from_name: "Ravi Patel", // your name
         },
         "kw9uQYqcvZDSGm55g"        // your public key
       );
