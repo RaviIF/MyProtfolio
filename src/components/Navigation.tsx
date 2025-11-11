@@ -45,11 +45,19 @@ const Navigation = () => {
           </div>
 
           <Button
-            onClick={() => scrollToSection("contact")}
-            className="bg-primary text-primary-foreground hover:shadow-glow transition-all"
-          >
-            Let's Connect
-          </Button>
+            <a
+              href={`Ravi_Patel_Resume.pdf`}
+              download="Ravi_Patel_Resume.pdf"
+              className="no-underline"
+            >
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-primary/50 text-foreground hover:bg-primary/10 flex items-center gap-2"
+              >
+                Download Resume
+              </Button>
+            </a>
         </div>
       </div>
     </nav>
