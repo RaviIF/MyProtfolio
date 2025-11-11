@@ -43,8 +43,6 @@ const Navigation = () => {
               </button>
             ))}
           </div>
-
-          <Button
              <a
               href={`Ravi_Patel_Resume.pdf`}
               download="Ravi_Patel_Resume.pdf"
