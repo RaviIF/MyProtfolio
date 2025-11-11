@@ -51,7 +51,7 @@ const Hero = () => {
               Contact Me
             </Button>
           <a
-              href="/Ravi_Patel_Resume.pdf"
+              href="{`${import.meta.env.BASE_URL}Ravi_Patel_Resume.pdf`}"
               download="Ravi_Patel_Resume.pdf"
               className="no-underline"
             >
