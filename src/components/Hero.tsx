@@ -50,20 +50,6 @@ const Hero = () => {
             >
               Contact Me
             </Button>
-          <a
-              href={`Ravi_Patel_Resume.pdf`}
-              download="Ravi_Patel_Resume.pdf"
-              className="no-underline"
-            >
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-primary/50 text-foreground hover:bg-primary/10 flex items-center gap-2"
-              >
-                Download Resume
-              </Button>
-            </a>
-
           </div>
 
           <div className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
