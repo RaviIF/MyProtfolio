@@ -50,7 +50,21 @@ const Hero = () => {
             >
               Contact Me
             </Button>
-            
+             {/* ==== NEW DOWNLOAD RESUME BUTTON ==== */}
+            <a
+              href="/Ravi_Patel_Resume.pdf"
+              download="Ravi_Patel_Resume.pdf"
+              className="no-underline"
+            >
+              <Button
+                size="lg"
+                variant="secondary"
+                className="flex items-center gap-2 hover:shadow-md"
+              >
+                <Download className="w-4 h-4" />
+                Download Resume
+              </Button>
+            </a>
           </div>
 
           <div className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
