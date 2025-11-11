@@ -50,7 +50,6 @@ const Navigation = () => {
             >
               <Button
                 size="lg"
-                variant="outline"
                 className="bg-primary text-primary-foreground hover:shadow-glow transition-all group"
               >
                 Download Resume
