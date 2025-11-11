@@ -50,6 +50,14 @@ const Hero = () => {
             >
               Contact Me
             </Button>
+            <Button
+              onClick={() => scrollToSection("contact")}
+              size="lg"
+              variant="outline"
+              className="border-primary/50 text-foreground hover:bg-primary/10"
+            >
+              Download Resume
+            </Button>
           </div>
 
           <div className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
