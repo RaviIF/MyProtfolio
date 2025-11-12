@@ -37,14 +37,15 @@ const Contact = () => {
       // 2️⃣ Send auto-reply to user
       await emailjs.send(
         "service_4tcy277",          // same service ID
-        "template_xoptwyz",      // your new auto-reply template ID
-        {
-          to_name: formData.name,
-          to_email: formData.email,
-          message: formData.message,
-          to_name: "Ravi Patel",
-          from_name: "Ravi Patel", // your name
-        },
+        "template_xoptwyz", 
+         templateParams,// your new auto-reply template ID
+        // {
+        //   to_name: formData.name,
+        //   to_email: formData.email,
+        //   message: formData.message,
+        //   to_name: "Ravi Patel",
+        //   from_name: "Ravi Patel", // your name
+        // },
         "kw9uQYqcvZDSGm55g"        // your public key
       );
       
