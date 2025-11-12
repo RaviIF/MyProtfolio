@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react"; // ✅ Add this import
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -52,6 +53,7 @@ const Navigation = () => {
                 size="lg"
                 className="bg-primary text-primary-foreground hover:shadow-glow transition-all group"
               >
+                <Download className="w-4 h-4 text-primary" /> {/* Icon */}
                 Download Resume
               </Button>
             </a>
