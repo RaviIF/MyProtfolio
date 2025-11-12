@@ -27,6 +27,15 @@ const Contact = () => {
         message: formData.message,
         to_name: "Ravi Patel"
       };
+      const templateParams2 = {
+        to_name: formData.name,
+        from_name: formData.name,
+        from_email: formData.email,
+          to_email: formData.email,
+          message: formData.message,
+          to_name: "Ravi Patel",
+          from_name: "Ravi Patel",
+      };
        // 1️⃣ Send message to you
       // await emailjs.send(
       //   'service_4tcy277',
