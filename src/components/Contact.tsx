@@ -47,7 +47,7 @@ const Contact = () => {
       await emailjs.send(
         "service_4tcy277",          // same service ID
         "template_xoptwyz", 
-         templateParams,// your new auto-reply template ID
+         templateParams2,// your new auto-reply template ID
         // {
         //   to_name: formData.name,
         //   to_email: formData.email,
