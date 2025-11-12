@@ -27,24 +27,24 @@ const Contact = () => {
         message: formData.message,
         to_name: "Ravi Patel"
       };
-      //  // 1️⃣ Send message to you
-      // await emailjs.send(
-      //   'service_4tcy277',
-      //   'template_w51obvo',
-      //   templateParams,
-      //   'kw9uQYqcvZDSGm55g'
-      // );
-      // 2️⃣ Send auto-reply to user
+       // 1️⃣ Send message to you
       await emailjs.send(
-        "service_4tcy277",          // same service ID
-        "template_xoptwyz",      // your new auto-reply template ID
-        {
-          to_name: formData.name,
-          to_email: formData.email,
-          from_name: "Ravi Patel", // your name
-        },
-        "kw9uQYqcvZDSGm55g"        // your public key
+        'service_4tcy277',
+        'template_w51obvo',
+        templateParams,
+        'kw9uQYqcvZDSGm55g'
       );
+      // 2️⃣ Send auto-reply to user
+      // await emailjs.send(
+      //   "service_4tcy277",          // same service ID
+      //   "template_xoptwyz",      // your new auto-reply template ID
+      //   {
+      //     to_name: formData.name,
+      //     to_email: formData.email,
+      //     from_name: "Ravi Patel", // your name
+      //   },
+      //   "kw9uQYqcvZDSGm55g"        // your public key
+      // );
       
       toast({
         title: "Message sent!",
