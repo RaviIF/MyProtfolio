@@ -27,13 +27,13 @@ const Contact = () => {
         message: formData.message,
         to_name: "Ravi Patel"
       };
-       // 1️⃣ Send message to you
-      await emailjs.send(
-        'service_4tcy277',
-        'template_w51obvo',
-        templateParams,
-        'kw9uQYqcvZDSGm55g'
-      );
+      //  // 1️⃣ Send message to you
+      // await emailjs.send(
+      //   'service_4tcy277',
+      //   'template_w51obvo',
+      //   templateParams,
+      //   'kw9uQYqcvZDSGm55g'
+      // );
       // 2️⃣ Send auto-reply to user
       await emailjs.send(
         "service_4tcy277",          // same service ID
