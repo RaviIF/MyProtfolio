@@ -42,7 +42,7 @@ const Contact = () => {
           to_name: formData.name,
           to_email: formData.email,
           message: formData.message,
-          to_name: "Ravi Patel"
+          to_name: "Ravi Patel",
           from_name: "Ravi Patel", // your name
         },
         "kw9uQYqcvZDSGm55g"        // your public key
