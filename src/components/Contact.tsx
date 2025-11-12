@@ -37,7 +37,7 @@ const Contact = () => {
       // 2️⃣ Send auto-reply to user
       await emailjs.send(
         "service_4tcy277",          // same service ID
-        "template_c02ya2s",      // your new auto-reply template ID
+        "template_5hye4hb",      // your new auto-reply template ID
         {
           to_name: formData.name,
           to_email: formData.email,
