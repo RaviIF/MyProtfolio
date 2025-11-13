@@ -53,7 +53,7 @@ const Navigation = () => {
                 size="lg"
                 className="bg-primary text-primary-foreground hover:shadow-glow transition-all group"
               >
-                <Download className="w-4 h-4 text-gray-500" /> {/* Icon */}
+                <Download className="w-4 h-4 text-black-500" /> {/* Icon */}
                 Resume
               </Button>
             </a>
