@@ -54,7 +54,7 @@ const Navigation = () => {
                 className="bg-primary text-primary-foreground hover:shadow-glow transition-all group"
               >
                 <Download className="w-4 h-4 text-gray-500" /> {/* Icon */}
-                Download Resume
+                Resume
               </Button>
             </a>
         </div>
