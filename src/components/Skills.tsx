@@ -22,7 +22,7 @@ const Skills = () => {
       icon: Cpu,
       title: "Tools & Hardware",
       skills: ["Figma","Git/GitHub","Visual Studio","Image Processing","Raspberry Pi", "HoloLens","VR"]
-    }
+    },
     {
       icon: Handshake,
       title: "Soft Skills",
