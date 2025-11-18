@@ -19,7 +19,11 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
+    // show immediate mini popup while sending
+    toast({
+      title: "Sending your message...",
+      description: "Please wait a moment.",
+    });
     try {
       const templateParams = {
         from_name: formData.name,
