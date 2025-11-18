@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { Code2, Gamepad2, Smartphone, Cpu } from "lucide-react";
+import { Code2, Gamepad2, Smartphone, Cpu, Handshake } from "lucide-react";
 
 const Skills = () => {
   const skillCategories = [
@@ -22,6 +22,11 @@ const Skills = () => {
       icon: Cpu,
       title: "Tools & Hardware",
       skills: ["Figma","Git/GitHub","Visual Studio","Image Processing","Raspberry Pi", "HoloLens","VR"]
+    }
+    {
+      icon: Handshake,
+      title: "Soft Skills",
+      skills: ["Problem Solving","Code Review","Team Collaboration","Documentation","Mentoring"]
     }
   ];
 
