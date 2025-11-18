@@ -6,7 +6,7 @@ const Skills = () => {
     {
       icon: Gamepad2,
       title: "Core Skills",
-      skills: ["Unity 3D", "XR/AR/MR", "UI/UX Design", "Gameplay Programming"]
+      skills: ["Unity 3D", "XR/AR/MR", "UI/UX Design", "Gameplay Programming","UI/UX Implementation","Performance Optimization","Multiplayer"]
     },
     {
       icon: Code2,
@@ -16,12 +16,12 @@ const Skills = () => {
     {
       icon: Smartphone,
       title: "Technologies & SDKs",
-      skills: ["Mediapipe", "Vuforia", "Agora SDK", "OpenXR", "MRTK", "In-App Purchases","Photon"]
+      skills: ["Mediapipe", "Vuforia", "Agora SDK", "OpenXR", "MRTK", "In-App Purchases","Photon","ARCore/ARKit","Oculus SDK",]
     },
     {
       icon: Cpu,
       title: "Tools & Hardware",
-      skills: ["Figma (UI Design)", "Raspberry Pi", "HoloLens", "Image Processing","VR"]
+      skills: ["Figma","Git/GitHub","Visual Studio","Image Processing","Raspberry Pi", "HoloLens","VR"]
     }
   ];
 
