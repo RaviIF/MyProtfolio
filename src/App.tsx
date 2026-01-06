@@ -3,7 +3,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { Toaster } from "@/components/ui/toaster";
 const App = () => (
-  <BrowserRouter basename="/Protfolio">
+  <BrowserRouter basename="/MyProtfolio">
     <>
       <Routes>
         <Route path="/" element={<Index />} />
