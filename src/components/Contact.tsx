@@ -47,7 +47,7 @@ const Contact = () => {
       // );
       // 2️⃣ Send auto-reply to user
       await emailjs.send(
-        "service_4tcy277",          // same service ID
+        "service_9g0u4yf",          // same service ID
         "template_xoptwyz", 
          templateParams2,// your new auto-reply template ID
         // {
