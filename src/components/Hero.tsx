@@ -54,7 +54,7 @@ const Hero = () => {
 
           <div className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
             <div className="p-6 bg-card/30 backdrop-blur-sm rounded-2xl border border-border/50">
-              <div className="text-4xl font-bold gradient-text mb-2">2+</div>
+              <div className="text-4xl font-bold gradient-text mb-2">3+</div>
               <div className="text-sm text-muted-foreground">Years Experience</div>
             </div>
             <div className="p-6 bg-card/30 backdrop-blur-sm rounded-2xl border border-border/50">
