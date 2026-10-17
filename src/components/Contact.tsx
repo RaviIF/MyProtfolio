@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, Mail, Linkedin, Send, Loader2 } from "lucide-react";
+import { Phone, Mail, Linkedin, Send, Loader2, MapPin, Github } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import emailjs from '@emailjs/browser';
@@ -35,29 +35,15 @@ const Contact = () => {
         to_name: formData.name,
         from_name: formData.name,
         from_email: formData.email,
-          to_email: formData.email,
-          message: formData.message,
+        to_email: formData.email,
+        message: formData.message,
       };
-       // 1️⃣ Send message to you
-      // await emailjs.send(
-      //   'service_4tcy277',
-      //   'template_w51obvo',
-      //   templateParams,
-      //   'kw9uQYqcvZDSGm55g'
-      // );
-      // 2️⃣ Send auto-reply to user
+      // Send auto-reply to user
       await emailjs.send(
-        "service_9g0u4yf",          // same service ID
+        "service_9g0u4yf",
         "template_xoptwyz", 
-         templateParams2,// your new auto-reply template ID
-        // {
-        //   to_name: formData.name,
-        //   to_email: formData.email,
-        //   message: formData.message,
-        //   to_name: "Ravi Patel",
-        //   from_name: "Ravi Patel", // your name
-        // },
-        "kw9uQYqcvZDSGm55g"        // your public key
+        templateParams2,
+        "kw9uQYqcvZDSGm55g"
       );
       
       toast({
@@ -80,22 +66,34 @@ const Contact = () => {
 
   const contactInfo = [
     {
-      icon: Phone,
-      label: "Phone",
-      value: "+91 7698512692",
-      link: "tel:+917698512692"
-    },
-    {
       icon: Mail,
       label: "Email",
       value: "rp.ravipatel90@gmail.com",
       link: "mailto:rp.ravipatel90@gmail.com"
     },
     {
+      icon: Phone,
+      label: "Phone",
+      value: "+91 76985 12692",
+      link: "tel:+917698512692"
+    },
+    {
       icon: Linkedin,
       label: "LinkedIn",
-      value: "Connect on LinkedIn",
+      value: "linkedin.com/in/ravi-patel-011839265",
       link: "https://linkedin.com/in/ravi-patel-011839265"
+    },
+    {
+      icon: Github,
+      label: "GitHub",
+      value: "github.com/raviif",
+      link: "https://github.com/raviif"
+    },
+    {
+      icon: MapPin,
+      label: "Location",
+      value: "Karamsad, Anand, Gujarat, India",
+      link: "https://maps.google.com/?q=Karamsad,Anand,Gujarat"
     }
   ];
 
