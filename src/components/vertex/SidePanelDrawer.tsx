@@ -81,7 +81,7 @@ export const SidePanelDrawer: React.FC<SidePanelDrawerProps> = ({
           <span className="px-3 py-1 rounded-full text-xs font-medium bg-indigo-500/15 border border-indigo-500/30 text-indigo-300">
             Role: {project.role}
           </span>
-          {project.isFlagship && (
+          {project.featured && (
             <span className="px-3 py-1 rounded-full text-xs font-medium bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 flex items-center gap-1">
               <Sparkles className="w-3 h-3 text-cyan-400" /> Flagship Production System
             </span>
@@ -94,18 +94,18 @@ export const SidePanelDrawer: React.FC<SidePanelDrawerProps> = ({
             Engineering Overview
           </h4>
           <p className="text-sm text-slate-300 leading-relaxed">
-            {project.longDescription}
+            {project.fullDescription || project.shortDescription}
           </p>
         </div>
 
         {/* Architecture Highlights */}
-        {project.architectureHighlights && project.architectureHighlights.length > 0 && (
+        {project.architecturalHighlights && project.architecturalHighlights.length > 0 && (
           <div className="mb-6">
             <h4 className="font-mono text-xs tracking-wider text-cyan-400 uppercase mb-3 flex items-center gap-2">
               <Cpu className="w-4 h-4" /> Architectural Highlights
             </h4>
             <div className="space-y-2.5">
-              {project.architectureHighlights.map((highlight, idx) => (
+              {project.architecturalHighlights.map((highlight, idx) => (
                 <div
                   key={idx}
                   className="flex items-start gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.05]"
@@ -126,7 +126,7 @@ export const SidePanelDrawer: React.FC<SidePanelDrawerProps> = ({
             <Layers className="w-4 h-4" /> Key Deliverables & Systems Built
           </h4>
           <ul className="space-y-2">
-            {project.keyDeliverables.map((item, idx) => (
+            {project.keyWork.map((item, idx) => (
               <li key={idx} className="flex items-start gap-2.5 text-xs text-slate-300">
                 <span className="text-indigo-400 font-bold font-mono">▸</span>
                 <span>{item}</span>
@@ -153,12 +153,12 @@ export const SidePanelDrawer: React.FC<SidePanelDrawerProps> = ({
             Technology Stack
           </h4>
           <div className="flex flex-wrap gap-2">
-            {project.technologies.map((tech) => (
+            {project.tech.map((t) => (
               <span
-                key={tech}
+                key={t}
                 className="px-2.5 py-1 rounded-lg text-xs font-mono bg-white/[0.04] border border-white/[0.08] text-slate-300"
               >
-                {tech}
+                {t}
               </span>
             ))}
           </div>

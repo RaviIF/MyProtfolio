@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { X, ChevronLeft, ChevronRight, Sparkles, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ALL_PROJECTS, ProjectItem, ProjectCategory } from "@/data/projectsData";
+import { PROJECTS_DATA, ProjectItem, ProjectCategory } from "@/data/projectsData";
 
 interface ProjectsCarouselDeckProps {
   isOpen: boolean;
@@ -11,12 +11,12 @@ interface ProjectsCarouselDeckProps {
 }
 
 const CATEGORIES: { label: string; value: ProjectCategory | "All"; count: number }[] = [
-  { label: "All Systems", value: "All", count: ALL_PROJECTS.length },
-  { label: "Medical XR", value: "Medical XR", count: ALL_PROJECTS.filter((p) => p.category === "Medical XR").length },
-  { label: "Unreal Engine 5", value: "Unreal Engine 5", count: ALL_PROJECTS.filter((p) => p.category === "Unreal Engine 5").length },
-  { label: "Healthcare & Web3D", value: "Healthcare & Web3D", count: ALL_PROJECTS.filter((p) => p.category === "Healthcare & Web3D").length },
-  { label: "AI & Vision", value: "AI & Vision", count: ALL_PROJECTS.filter((p) => p.category === "AI & Vision").length },
-  { label: "Games & VR", value: "Games & VR", count: ALL_PROJECTS.filter((p) => p.category === "Games & VR").length },
+  { label: "All Systems", value: "All", count: PROJECTS_DATA.length },
+  { label: "Medical XR", value: "Medical XR", count: PROJECTS_DATA.filter((p) => p.category === "Medical XR").length },
+  { label: "Unreal Engine 5", value: "Unreal Engine 5", count: PROJECTS_DATA.filter((p) => p.category === "Unreal Engine 5").length },
+  { label: "Healthcare & Web3D", value: "Healthcare & Web3D", count: PROJECTS_DATA.filter((p) => p.category === "Healthcare & Web3D").length },
+  { label: "AI & Vision", value: "AI & Vision", count: PROJECTS_DATA.filter((p) => p.category === "AI & Vision").length },
+  { label: "Games & VR", value: "Games & VR", count: PROJECTS_DATA.filter((p) => p.category === "Games & VR").length },
 ];
 
 export const ProjectsCarouselDeck: React.FC<ProjectsCarouselDeckProps> = ({
@@ -58,8 +58,8 @@ export const ProjectsCarouselDeck: React.FC<ProjectsCarouselDeckProps> = ({
 
   const filteredProjects =
     selectedCategory === "All"
-      ? ALL_PROJECTS
-      : ALL_PROJECTS.filter((p) => p.category === selectedCategory);
+      ? PROJECTS_DATA
+      : PROJECTS_DATA.filter((p) => p.category === selectedCategory);
 
   return (
     <div
@@ -158,7 +158,7 @@ export const ProjectsCarouselDeck: React.FC<ProjectsCarouselDeckProps> = ({
                 <span className="font-mono text-[10px] tracking-wider text-cyan-400 uppercase font-semibold">
                   {project.category}
                 </span>
-                {project.isFlagship && (
+                {project.featured && (
                   <span className="flex items-center gap-1 font-mono text-[10px] text-indigo-400">
                     <Sparkles className="w-3 h-3 text-cyan-400" /> Flagship
                   </span>
@@ -188,12 +188,12 @@ export const ProjectsCarouselDeck: React.FC<ProjectsCarouselDeckProps> = ({
             {/* Bottom Tech Tags & Inspect CTA */}
             <div>
               <div className="flex flex-wrap gap-1.5 mb-4">
-                {project.technologies.slice(0, 3).map((tech) => (
+                {project.tech.slice(0, 3).map((t) => (
                   <span
-                    key={tech}
+                    key={t}
                     className="px-2 py-0.5 rounded text-[10px] font-mono bg-white/[0.03] border border-white/[0.06] text-slate-400"
                   >
-                    {tech}
+                    {t}
                   </span>
                 ))}
               </div>

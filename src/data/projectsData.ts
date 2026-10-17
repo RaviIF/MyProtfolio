@@ -18,6 +18,8 @@ export interface ProjectItem {
   keyWork: string[];
   architecturalHighlights: string[];
   featured?: boolean;
+  metrics?: string;
+  liveUrl?: string;
 }
 
 export const PROJECT_CATEGORIES: ProjectCategory[] = [
