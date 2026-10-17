@@ -55,7 +55,7 @@ export const SlideContact: React.FC = () => {
         <div className="mb-4 flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-cyan-400" />
           <span className="font-mono text-xs text-cyan-400 tracking-widest uppercase">
-            STATION 07 // INITIATE TRANSMISSION
+            STATION 07 // GET IN TOUCH
           </span>
         </div>
 
@@ -65,7 +65,7 @@ export const SlideContact: React.FC = () => {
             Let's Build Something <span className="gradient-text">Exceptional</span>
           </h2>
           <p className="font-mono text-xs md:text-sm text-slate-400">
-            Available for Senior Software & Game Development, Spatial Computing (XR), and High-Performance Native Systems roles.
+            Open for Senior Software & Game Development, Spatial Computing (XR), and Interactive 3D roles.
           </p>
         </div>
 
@@ -78,7 +78,7 @@ export const SlideContact: React.FC = () => {
               </div>
               <div>
                 <span className="font-mono text-[10px] text-slate-400 uppercase tracking-widest block">
-                  Email Transmission
+                  Email Address
                 </span>
                 <a
                   href="mailto:patelravi28042001@gmail.com"
@@ -95,7 +95,7 @@ export const SlideContact: React.FC = () => {
               </div>
               <div>
                 <span className="font-mono text-[10px] text-slate-400 uppercase tracking-widest block">
-                  Secure Voice / WhatsApp
+                  Phone / WhatsApp
                 </span>
                 <a
                   href="tel:+919712728974"
@@ -112,7 +112,7 @@ export const SlideContact: React.FC = () => {
               </div>
               <div>
                 <span className="font-mono text-[10px] text-slate-400 uppercase tracking-widest block">
-                  Deployment Coordinates
+                  Location
                 </span>
                 <span className="text-xs md:text-sm font-semibold text-white font-mono">
                   Karamsad, Anand, Gujarat, India
@@ -179,14 +179,14 @@ export const SlideContact: React.FC = () => {
 
               <div>
                 <label className="block text-xs font-mono text-slate-400 mb-1.5 uppercase">
-                  Mission / Project Brief
+                  Message Details
                 </label>
                 <Textarea
                   required
                   rows={4}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder="Outline your project scope, engineering requirements, or role details..."
+                  placeholder="Tell me about your project, team requirements, or role details..."
                   className="bg-white/[0.03] border-white/10 text-white rounded-xl text-xs focus:border-cyan-400 resize-none"
                 />
               </div>
@@ -198,17 +198,17 @@ export const SlideContact: React.FC = () => {
               >
                 {isSubmitting ? (
                   <>
-                    <span>Transmitting...</span>
+                    <span>Sending...</span>
                     <Loader2 className="ml-2 w-3.5 h-3.5 animate-spin" />
                   </>
                 ) : isSent ? (
                   <>
-                    <span>Transmission Completed</span>
+                    <span>Message Sent Successfully</span>
                     <CheckCircle2 className="ml-2 w-3.5 h-3.5 text-emerald-400" />
                   </>
                 ) : (
                   <>
-                    <span>[ TRANSMIT MESSAGE ]</span>
+                    <span>[ SEND MESSAGE ]</span>
                     <Send className="ml-2 w-3.5 h-3.5" />
                   </>
                 )}
@@ -218,10 +218,10 @@ export const SlideContact: React.FC = () => {
         </div>
       </div>
 
-      {/* Vertex3D Minimalist Bottom Legal */}
+      {/* Minimalist Bottom Legal */}
       <footer className="pt-8 border-t border-white/[0.06] text-center relative z-10">
         <p className="font-mono text-[11px] text-slate-500">
-          © {new Date().getFullYear()} Ravi Patel. High-Performance Spatial & Native Systems Architecture.
+          © {new Date().getFullYear()} Ravi Patel. Software & Game Developer.
         </p>
       </footer>
     </section>

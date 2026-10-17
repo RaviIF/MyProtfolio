@@ -21,14 +21,14 @@ export const SlideHero: React.FC<SlideHeroProps> = ({ onExploreClick, onOpenProj
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
           </span>
           <span className="font-mono text-xs text-slate-300 tracking-wider">
-            STATION 00 // DEV COMMAND CENTER
+            SOFTWARE & GAME DEVELOPER
           </span>
         </div>
 
         {/* Large Brutalist Hero Heading */}
         <div className="mb-6">
           <span className="font-mono text-xs md:text-sm tracking-[0.3em] text-cyan-400 uppercase block mb-3">
-            Real-Time 3D • Native Systems • Spatial Computing
+            Game Development • Spatial Computing (XR) • Interactive 3D
           </span>
           <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight leading-[1.05]">
             <span className="metallic-text">RAVI </span>
@@ -38,39 +38,38 @@ export const SlideHero: React.FC<SlideHeroProps> = ({ onExploreClick, onOpenProj
 
         {/* Subtitle */}
         <p className="max-w-2xl text-sm sm:text-base md:text-lg text-slate-300 font-normal leading-relaxed mb-8">
-          Software & Game Developer architecting high-performance runtime systems across{" "}
+          Crafting high-performance games, spatial computing experiences, and interactive applications across{" "}
           <span className="text-cyan-400 font-semibold font-mono">Unity (C#)</span>,{" "}
-          <span className="text-indigo-400 font-semibold font-mono">Unreal Engine 5 (C++)</span>,{" "}
-          <span className="text-purple-400 font-semibold font-mono">Three.js</span>, and{" "}
-          <span className="text-emerald-400 font-semibold font-mono">Hardened Linux Kiosks</span>.
+          <span className="text-indigo-400 font-semibold font-mono">Unreal Engine 5 (C++)</span>, and{" "}
+          <span className="text-purple-400 font-semibold font-mono">Three.js / WebGL</span>.
         </p>
 
-        {/* Linear Metric Capsules */}
+        {/* Professional Metric Capsules */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 max-w-3xl w-full mb-10">
           <div className="p-4 rounded-2xl bg-[#0d101d]/75 border border-white/[0.08] backdrop-blur-xl text-center">
             <span className="font-mono text-2xl md:text-3xl font-extrabold gradient-text block">
               3+ Years
             </span>
             <span className="font-mono text-[11px] text-slate-400 tracking-wider uppercase mt-1 block">
-              Production Experience
+              Professional Experience
             </span>
           </div>
 
           <div className="p-4 rounded-2xl bg-[#0d101d]/75 border border-white/[0.08] backdrop-blur-xl text-center">
             <span className="font-mono text-2xl md:text-3xl font-extrabold gradient-text block">
-              15+ Systems
+              15+ Projects
             </span>
             <span className="font-mono text-[11px] text-slate-400 tracking-wider uppercase mt-1 block">
-              Engines, Games & Kiosks
+              Shipped & Delivered
             </span>
           </div>
 
           <div className="col-span-2 sm:col-span-1 p-4 rounded-2xl bg-[#0d101d]/75 border border-white/[0.08] backdrop-blur-xl text-center">
             <span className="font-mono text-2xl md:text-3xl font-extrabold gradient-text block">
-              &lt;100ms
+              Cross-Platform
             </span>
             <span className="font-mono text-[11px] text-slate-400 tracking-wider uppercase mt-1 block">
-              Low-Latency XR & E2EE
+              PC, Mobile & XR Headsets
             </span>
           </div>
         </div>

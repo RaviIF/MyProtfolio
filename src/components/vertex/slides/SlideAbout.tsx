@@ -6,23 +6,23 @@ export const SlideAbout: React.FC = () => {
   const competencies = [
     {
       icon: Box,
-      title: "Procedural 3D & C++ Systems",
-      description: "Automated CAD-to-3D mesh generation, polygon clipping math, and runtime procedural floor systems in Unreal Engine 5."
+      title: "Game Development & 3D Systems",
+      description: "Custom gameplay mechanics, real-time physics, and procedural 3D environments across Unreal Engine 5 and Unity."
     },
     {
       icon: Radio,
-      title: "Low-Latency XR Video Pipelines",
-      description: "Sub-100ms real-time camera streaming to XREAL glasses & HoloLens 2 with 3D volumetric CT/MRI anatomical overlays."
+      title: "Spatial Computing (XR & VR/AR)",
+      description: "Immersive medical visualization, interactive training simulations, and stereoscopic headsets (HoloLens 2, XREAL, Meta Quest)."
     },
     {
       icon: ShieldCheck,
-      title: "Kiosk Hardening & Zero-Trust E2EE",
-      description: "Commercial Linux/Ubuntu kiosk deployments with X25519, HKDF-SHA256, AES-256-GCM, and offline-first telemetry queues."
+      title: "Interactive Kiosks & Hardware",
+      description: "Commercial touchscreen and floor-projection systems built on hardened Linux with robust offline architecture."
     },
     {
       icon: Eye,
-      title: "Computer Vision & Edge AI",
-      description: "DirectShow buffer-free camera processing, YOLO + ONNX models, and MediaPipe body tracking for controller-free gameplay."
+      title: "Computer Vision & Smart Motion",
+      description: "Camera-based gesture recognition, skeletal body tracking, and real-time vision processing for controller-free gameplay."
     }
   ];
 
@@ -36,17 +36,17 @@ export const SlideAbout: React.FC = () => {
         <div className="mb-4 flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-cyan-400" />
           <span className="font-mono text-xs text-cyan-400 tracking-widest uppercase">
-            STATION 01 // ENGINEERING PROFILE
+            STATION 01 // PROFILE & EXPERTISE
           </span>
         </div>
 
         {/* Header */}
         <div className="mb-8">
           <h2 className="text-3xl md:text-5xl font-black tracking-tight text-white mb-3">
-            Core Technical <span className="gradient-text">Competencies</span>
+            Core Areas of <span className="gradient-text">Expertise</span>
           </h2>
           <p className="font-mono text-xs md:text-sm text-slate-400 max-w-2xl">
-            Software & Game Developer at Invisible Fiction (May 2023 – Present). Bridging low-level C++ engine architecture with immersive spatial computing.
+            Software & Game Developer at Invisible Fiction (May 2023 – Present). Designing and delivering robust 3D, XR, and interactive applications.
           </p>
         </div>
 

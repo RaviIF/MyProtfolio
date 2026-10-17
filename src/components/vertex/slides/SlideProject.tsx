@@ -28,7 +28,7 @@ export const SlideProject: React.FC<SlideProjectProps> = ({
         <div className="mb-4 flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
           <span className="font-mono text-xs text-cyan-400 tracking-widest uppercase">
-            STATION {stationCode} // {project.category}
+            FEATURED PROJECT {stationCode} // {project.category}
           </span>
         </div>
 

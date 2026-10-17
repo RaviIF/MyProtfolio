@@ -52,7 +52,7 @@ export const SlideSkills: React.FC = () => {
         <div className="mb-4 flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-cyan-400" />
           <span className="font-mono text-xs text-cyan-400 tracking-widest uppercase">
-            STATION 06 // CORE SYSTEMS & ARCHITECTURE
+            STATION 06 // SKILLS & ARCHITECTURE
           </span>
         </div>
 
@@ -62,7 +62,7 @@ export const SlideSkills: React.FC = () => {
             Technical Stack & <span className="gradient-text">Architecture</span>
           </h2>
           <p className="font-mono text-xs md:text-sm text-slate-400 max-w-2xl">
-            6 Specialized Domain Clusters deployed across enterprise medical, CAD automation, and commercial kiosk installations.
+            Technologies and frameworks deployed across commercial games, medical XR platforms, and interactive 3D installations.
           </p>
         </div>
 
