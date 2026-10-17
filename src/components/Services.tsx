@@ -1,40 +1,72 @@
 import { Card } from "@/components/ui/card";
-import { Gamepad2, Code } from "lucide-react";
+import { Glasses, Box, MonitorCheck, Eye, CheckCircle2 } from "lucide-react";
 
 const Services = () => {
   const services = [
     {
-      icon: Gamepad2,
-      title: "Game Development",
-      description: "Custom 2D/3D games for mobile, PC, and XR platforms using Unity. Specializing in interactive gameplay, immersive experiences, and cross-platform optimization.",
+      icon: Glasses,
+      title: "Spatial Computing & Medical XR",
+      description:
+        "Mission-critical XR applications with sub-100ms video streaming, surgical endoscope feeds, and volumetric medical data visualization.",
       features: [
-        "Mobile game development (Android & iOS)",
-        "PC game development (Windows & Mac)",
-        "XR/AR/MR game experiences",
-        "Gesture and motion-controlled gameplay"
+        "Operating theatre live camera & endoscope video pipelines",
+        "Targeted headsets: Microsoft HoloLens 2, XREAL Air, Meta Quest",
+        "MRTK & OpenXR gesture interaction and spatial anchoring",
+        "Interactive 3D anatomical reconstruction from CT, MRI, and X-ray"
       ]
     },
     {
-      icon: Code,
-      title: "Software Development",
-      description: "Interactive simulations, visualization tools, and system design for multiple industries, especially medical and training sectors.",
+      icon: Box,
+      title: "Unreal Engine 5 & Procedural C++ Systems",
+      description:
+        "High-performance C++ pipelines converting raw architectural drawings into real-time interactive 3D simulations without manual modeling.",
       features: [
-        "Medical visualization systems",
-        "Training simulations",
-        "Interactive educational tools",
-        "Custom software solutions"
+        "Automated 2D CAD/DXF-to-3D procedural building engines",
+        "Custom C++ mesh generation via UProceduralMeshComponent",
+        "Geometric clipping algorithms for complex polygon room tile contours",
+        "Runtime interior customization and dynamic asset swapping"
+      ]
+    },
+    {
+      icon: MonitorCheck,
+      title: "Interactive Kiosks & Web3D Platforms",
+      description:
+        "Commercial rehabilitation stations, multi-modal floor projections, and zero-trust encrypted telemetry for clinical deployments.",
+      features: [
+        "Hardened Linux (Ubuntu) & Windows Electron kiosk architectures",
+        "Zero-trust E2E encryption tunnel (X25519, HKDF-SHA256, AES-256-GCM)",
+        "Offline-first IndexedDB metric sync queues with automatic retries",
+        "Modular Three.js / WebGL architecture and AI voice recognition"
+      ]
+    },
+    {
+      icon: Eye,
+      title: "Computer Vision & Edge AI",
+      description:
+        "Real-time vision pipelines that eliminate input latency and transform standard camera feeds into controller-free interactive experiences.",
+      features: [
+        "DirectShow camera capture (cv2.CAP_DSHOW) eliminating buffer lag",
+        "Hybrid ML models combining MediaPipe skeletal landmarks with YOLO/ONNX",
+        "Controller-free full-body games (Fruit Samurai, Alien Runner, etc.)",
+        "Biometric distance tracking and iris localization algorithms"
       ]
     }
   ];
 
   return (
-    <section className="py-20 relative">
+    <section id="services" className="py-24 relative">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-center">
-            <span className="gradient-text">Services</span>
-          </h2>
-          <div className="w-20 h-1 bg-primary mx-auto mb-12" />
+          {/* Section Header */}
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              Engineering <span className="gradient-text">Services & Capabilities</span>
+            </h2>
+            <div className="w-20 h-1 bg-primary mx-auto mb-6" />
+            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
+              Specialized engineering consulting and end-to-end development for spatial computing, procedural 3D, and clinical kiosk hardware.
+            </p>
+          </div>
 
           <div className="grid md:grid-cols-2 gap-8">
             {services.map((service, index) => {
@@ -42,23 +74,31 @@ const Services = () => {
               return (
                 <Card
                   key={index}
-                  className="p-8 bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all"
+                  className="p-8 bg-card/40 backdrop-blur-md border-border/50 hover:border-primary/50 transition-all rounded-2xl shadow-xl flex flex-col justify-between"
                 >
-                  <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mb-6">
-                    <Icon className="w-8 h-8 text-primary" />
+                  <div>
+                    <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center mb-6 border border-primary/30">
+                      <Icon className="w-7 h-7 text-primary" />
+                    </div>
+
+                    <h3 className="text-2xl font-bold text-foreground mb-3">
+                      {service.title}
+                    </h3>
+                    <p className="text-muted-foreground mb-6 text-sm md:text-base leading-relaxed">
+                      {service.description}
+                    </p>
+
+                    <ul className="space-y-3 pt-4 border-t border-border/30">
+                      {service.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-start gap-3">
+                          <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-1" />
+                          <span className="text-sm text-foreground/80 leading-relaxed">
+                            {feature}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  
-                  <h3 className="text-2xl font-bold text-foreground mb-3">{service.title}</h3>
-                  <p className="text-muted-foreground mb-6">{service.description}</p>
-                  
-                  <ul className="space-y-3">
-                    {service.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
-                        <span className="text-foreground/80">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </Card>
               );
             })}
