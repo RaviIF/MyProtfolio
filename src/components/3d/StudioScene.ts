@@ -3,6 +3,7 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { StudioSceneOptions } from "./types";
+import { createStudioEnvironment, StudioEnvironment } from "./StudioObjects";
 
 export class StudioScene {
   private container: HTMLElement | null = null;
@@ -11,6 +12,7 @@ export class StudioScene {
   public renderer: THREE.WebGLRenderer | null = null;
   private composer: EffectComposer | null = null;
   private bloomPass: UnrealBloomPass | null = null;
+  private environment: StudioEnvironment | null = null;
 
   private animationFrameId: number | null = null;
   private isDestroyed = false;
@@ -72,10 +74,14 @@ export class StudioScene {
       // 3. Lighting Rig
       this.setupLighting();
 
-      // 4. Post-processing Bloom
+      // 4. Studio Environment & Stations
+      this.environment = createStudioEnvironment();
+      this.scene.add(this.environment.group);
+
+      // 5. Post-processing Bloom
       this.setupPostProcessing(width, height);
 
-      // 5. Notify loaded
+      // 6. Notify loaded
       if (options?.onLoaded) {
         options.onLoaded();
       }
@@ -176,6 +182,11 @@ export class StudioScene {
       const delta = this.clock.getDelta();
       const elapsedTime = this.clock.getElapsedTime();
 
+      // Update 3D environment props (rotating holograms, pulsing LEDs, dust)
+      if (this.environment) {
+        this.environment.update(delta, elapsedTime);
+      }
+
       // Trigger custom tick hooks (e.g. camera, floating holograms)
       if (this.onTick) {
         this.onTick(delta, elapsedTime);
@@ -222,6 +233,7 @@ export class StudioScene {
       }
     });
 
+    this.environment = null;
     this.scene.clear();
   }
 }
