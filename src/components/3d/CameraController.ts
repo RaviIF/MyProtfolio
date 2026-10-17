@@ -1,0 +1,125 @@
+import * as THREE from "three";
+import { CameraWaypoint } from "./types";
+
+export const DEFAULT_CAMERA_WAYPOINTS: CameraWaypoint[] = [
+  {
+    sectionId: "home",
+    scrollProgress: 0.0,
+    position: new THREE.Vector3(0.0, 1.4, 3.2),
+    target: new THREE.Vector3(0.0, 1.15, 0.0),
+  },
+  {
+    sectionId: "about",
+    scrollProgress: 0.2,
+    position: new THREE.Vector3(2.0, 1.7, 1.8),
+    target: new THREE.Vector3(3.0, 1.1, -1.2),
+  },
+  {
+    sectionId: "experience",
+    scrollProgress: 0.38,
+    position: new THREE.Vector3(0.8, 1.9, 1.2),
+    target: new THREE.Vector3(0.0, 1.0, -2.5),
+  },
+  {
+    sectionId: "projects",
+    scrollProgress: 0.62,
+    position: new THREE.Vector3(-2.2, 1.6, -0.5),
+    target: new THREE.Vector3(-3.2, 1.3, -2.8),
+  },
+  {
+    sectionId: "skills",
+    scrollProgress: 0.82,
+    position: new THREE.Vector3(-0.6, 1.4, -3.6),
+    target: new THREE.Vector3(-1.6, 1.3, -6.0),
+  },
+  {
+    sectionId: "contact",
+    scrollProgress: 1.0,
+    position: new THREE.Vector3(0.0, 3.0, 4.2),
+    target: new THREE.Vector3(0.0, 1.1, -2.0),
+  },
+];
+
+export class CameraController {
+  private camera: THREE.PerspectiveCamera;
+  private waypoints: CameraWaypoint[];
+
+  // Current interpolated values
+  private currentPosition = new THREE.Vector3();
+  private currentTarget = new THREE.Vector3();
+
+  // Target values derived from scroll
+  private targetPosition = new THREE.Vector3();
+  private targetLookAt = new THREE.Vector3();
+
+  // Mouse parallax dampening
+  private mouseOffset = new THREE.Vector2(0, 0);
+  private currentMouseOffset = new THREE.Vector2(0, 0);
+
+  constructor(camera: THREE.PerspectiveCamera, waypoints: CameraWaypoint[] = DEFAULT_CAMERA_WAYPOINTS) {
+    this.camera = camera;
+    this.waypoints = waypoints;
+
+    if (waypoints.length > 0) {
+      this.currentPosition.copy(waypoints[0].position);
+      this.currentTarget.copy(waypoints[0].target);
+      this.targetPosition.copy(waypoints[0].position);
+      this.targetLookAt.copy(waypoints[0].target);
+    }
+  }
+
+  public setMouseOffset(normalizedX: number, normalizedY: number): void {
+    // normalizedX and normalizedY in range [-1, 1]
+    this.mouseOffset.set(normalizedX * 0.25, normalizedY * 0.15);
+  }
+
+  public update(scrollProgress: number, delta: number): void {
+    // 1. Clamp progress between 0 and 1
+    const p = Math.max(0, Math.min(1, scrollProgress));
+
+    // 2. Find bounding waypoints
+    let startIndex = 0;
+    for (let i = 0; i < this.waypoints.length - 1; i++) {
+      if (p >= this.waypoints[i].scrollProgress && p <= this.waypoints[i + 1].scrollProgress) {
+        startIndex = i;
+        break;
+      }
+    }
+    const endIndex = Math.min(startIndex + 1, this.waypoints.length - 1);
+
+    const wStart = this.waypoints[startIndex];
+    const wEnd = this.waypoints[endIndex];
+
+    // Local segment progress t in [0, 1]
+    const segmentSpan = wEnd.scrollProgress - wStart.scrollProgress;
+    const tRaw = segmentSpan > 0 ? (p - wStart.scrollProgress) / segmentSpan : 0;
+    // Smooth cosine interpolation
+    const t = 0.5 - 0.5 * Math.cos(tRaw * Math.PI);
+
+    // Calculate base position & target
+    this.targetPosition.lerpVectors(wStart.position, wEnd.position, t);
+    this.targetLookAt.lerpVectors(wStart.target, wEnd.target, t);
+
+    // 3. Smooth mouse parallax interpolation
+    const mouseLerpFactor = Math.min(1, delta * 3.5);
+    this.currentMouseOffset.lerp(this.mouseOffset, mouseLerpFactor);
+
+    // 4. Smooth camera lerp (smoother scroll follow)
+    const cameraLerpFactor = Math.min(1, delta * 4.0);
+    this.currentPosition.lerp(this.targetPosition, cameraLerpFactor);
+    this.currentTarget.lerp(this.targetLookAt, cameraLerpFactor);
+
+    // 5. Apply to Three.js camera
+    this.camera.position.set(
+      this.currentPosition.x + this.currentMouseOffset.x,
+      this.currentPosition.y - this.currentMouseOffset.y,
+      this.currentPosition.z
+    );
+
+    this.camera.lookAt(
+      this.currentTarget.x,
+      this.currentTarget.y,
+      this.currentTarget.z
+    );
+  }
+}

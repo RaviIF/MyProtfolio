@@ -4,11 +4,13 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { StudioSceneOptions } from "./types";
 import { createStudioEnvironment, StudioEnvironment } from "./StudioObjects";
+import { CameraController } from "./CameraController";
 
 export class StudioScene {
   private container: HTMLElement | null = null;
   public scene: THREE.Scene;
   public camera: THREE.PerspectiveCamera;
+  public cameraController: CameraController;
   public renderer: THREE.WebGLRenderer | null = null;
   private composer: EffectComposer | null = null;
   private bloomPass: UnrealBloomPass | null = null;
@@ -17,6 +19,7 @@ export class StudioScene {
   private animationFrameId: number | null = null;
   private isDestroyed = false;
   private isIdle = false;
+  private scrollProgress = 0;
   private lastTime = 0;
   private clock: THREE.Clock;
 
@@ -30,6 +33,7 @@ export class StudioScene {
     this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
     this.camera.position.set(0, 1.4, 3.2);
 
+    this.cameraController = new CameraController(this.camera);
     this.clock = new THREE.Clock();
   }
 
@@ -182,6 +186,9 @@ export class StudioScene {
       const delta = this.clock.getDelta();
       const elapsedTime = this.clock.getElapsedTime();
 
+      // Update camera along scroll spline + mouse parallax
+      this.cameraController.update(this.scrollProgress, delta);
+
       // Update 3D environment props (rotating holograms, pulsing LEDs, dust)
       if (this.environment) {
         this.environment.update(delta, elapsedTime);
@@ -201,6 +208,14 @@ export class StudioScene {
     };
 
     this.animationFrameId = requestAnimationFrame(animate);
+  }
+
+  public setScrollProgress(progress: number): void {
+    this.scrollProgress = progress;
+  }
+
+  public setMouseOffset(normalizedX: number, normalizedY: number): void {
+    this.cameraController.setMouseOffset(normalizedX, normalizedY);
   }
 
   public destroy(): void {
