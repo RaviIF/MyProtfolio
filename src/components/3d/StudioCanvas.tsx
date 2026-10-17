@@ -70,15 +70,29 @@ export const StudioCanvas: React.FC<StudioCanvasProps> = ({ isEnabled = true }) 
       resetIdleTimer();
     };
 
-    // 3. Mouse Parallax Tracker
+    // 3. Mouse Parallax & Fluid Ripple Tracker
     const handleMouseMove = (e: MouseEvent) => {
       const normalizedX = (e.clientX / window.innerWidth) * 2 - 1;
       const normalizedY = (e.clientY / window.innerHeight) * 2 - 1;
       scene.setMouseOffset(normalizedX, normalizedY);
+
+      // WebGL UV coordinates: (0,0) is bottom-left, (1,1) is top-right
+      const uvX = e.clientX / window.innerWidth;
+      const uvY = 1.0 - e.clientY / window.innerHeight;
+      scene.onCursorMove(uvX, uvY, performance.now() * 0.001);
+
       resetIdleTimer();
     };
 
-    // 4. Idle Battery Saver Watchdog (3s timeout)
+    // 4. Click ripple burst
+    const handleClick = (e: MouseEvent) => {
+      const uvX = e.clientX / window.innerWidth;
+      const uvY = 1.0 - e.clientY / window.innerHeight;
+      scene.onCursorClick(uvX, uvY);
+      resetIdleTimer();
+    };
+
+    // 5. Idle Battery Saver Watchdog (3s timeout)
     let idleTimer: ReturnType<typeof setTimeout> | null = null;
     const resetIdleTimer = () => {
       scene.setIdle(false);
@@ -89,13 +103,14 @@ export const StudioCanvas: React.FC<StudioCanvasProps> = ({ isEnabled = true }) 
     };
     resetIdleTimer();
 
-    // 5. Window Resize Handler
+    // 6. Window Resize Handler
     const handleResize = () => {
       scene.resize();
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("click", handleClick, { passive: true });
     window.addEventListener("resize", handleResize);
 
     // Initial scroll sync
@@ -107,6 +122,7 @@ export const StudioCanvas: React.FC<StudioCanvasProps> = ({ isEnabled = true }) 
       if (idleTimer) clearTimeout(idleTimer);
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("click", handleClick);
       window.removeEventListener("resize", handleResize);
       scene.destroy();
       sceneRef.current = null;

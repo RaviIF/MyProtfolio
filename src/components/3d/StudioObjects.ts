@@ -448,24 +448,28 @@ export function createStudioEnvironment(): StudioEnvironment {
   root.add(serverGroup);
 
   // ==========================================
-  // 6. Ambient Cyber Dust Particles
+  // 6. Ambient Cyber Dust Particles (Vertex3D infiniteDust style)
   // ==========================================
-  const particleCount = 280;
+  const particleCount = 450;
   const particleGeo = new THREE.BufferGeometry();
   const particlePositions = new Float32Array(particleCount * 3);
+  const particleSpeeds = new Float32Array(particleCount);
 
-  for (let i = 0; i < particleCount * 3; i += 3) {
-    particlePositions[i] = (Math.random() - 0.5) * 16;
-    particlePositions[i + 1] = Math.random() * 4.5;
-    particlePositions[i + 2] = (Math.random() - 0.5) * 16;
+  for (let i = 0; i < particleCount; i++) {
+    const idx = i * 3;
+    particlePositions[idx] = (Math.random() - 0.5) * 18;
+    particlePositions[idx + 1] = Math.random() * 4.8;
+    particlePositions[idx + 2] = (Math.random() - 0.5) * 18;
+    particleSpeeds[i] = 0.08 + Math.random() * 0.14;
   }
 
   particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
   const particleMat = new THREE.PointsMaterial({
-    color: 0x22d3ee,
-    size: 0.04,
+    color: 0x38bdf8,
+    size: 0.038,
     transparent: true,
-    opacity: 0.6,
+    opacity: 0.72,
+    blending: THREE.AdditiveBlending,
   });
   particlesMesh = new THREE.Points(particleGeo, particleMat);
   root.add(particlesMesh);
@@ -473,7 +477,7 @@ export function createStudioEnvironment(): StudioEnvironment {
   // ==========================================
   // Update Animation Loop
   // ==========================================
-  const update = (_delta: number, elapsed: number) => {
+  const update = (delta: number, elapsed: number) => {
     // 1. Rotate medical hologram
     if (medicalHologram) {
       medicalHologram.rotation.y = elapsed * 0.6;
@@ -498,9 +502,28 @@ export function createStudioEnvironment(): StudioEnvironment {
       (randomLed.material as THREE.MeshBasicMaterial).color.setHex(Math.random() > 0.5 ? 0x22d3ee : 0x10b981);
     }
 
-    // 5. Drift dust particles
+    // 5. Drift dust particles with Brownian turbulence and continuous vertical fall
     if (particlesMesh) {
-      particlesMesh.rotation.y = elapsed * 0.02;
+      const posAttr = particlesMesh.geometry.attributes.position as THREE.BufferAttribute;
+      const positions = posAttr.array as Float32Array;
+
+      for (let i = 0; i < particleCount; i++) {
+        const idx = i * 3;
+        // Vertical gentle drift downward
+        positions[idx + 1] -= delta * particleSpeeds[i];
+        if (positions[idx + 1] < 0.1) {
+          positions[idx + 1] = 4.8;
+          positions[idx] = (Math.random() - 0.5) * 18;
+          positions[idx + 2] = (Math.random() - 0.5) * 18;
+        }
+
+        // Sub-pixel horizontal micro-drift
+        positions[idx] += Math.sin(elapsed * 0.85 + i * 0.4) * delta * 0.035;
+        positions[idx + 2] += Math.cos(elapsed * 0.7 + i * 0.4) * delta * 0.035;
+      }
+
+      posAttr.needsUpdate = true;
+      particlesMesh.rotation.y = elapsed * 0.012;
     }
   };
 

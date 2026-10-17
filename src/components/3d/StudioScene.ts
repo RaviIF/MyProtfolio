@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
+import { CinematicPostPass } from "./CinematicPostPass";
 import { StudioSceneOptions } from "./types";
 import { createStudioEnvironment, StudioEnvironment } from "./StudioObjects";
 import { CameraController } from "./CameraController";
@@ -14,6 +15,7 @@ export class StudioScene {
   public renderer: THREE.WebGLRenderer | null = null;
   private composer: EffectComposer | null = null;
   private bloomPass: UnrealBloomPass | null = null;
+  private cinematicPass: CinematicPostPass | null = null;
   private environment: StudioEnvironment | null = null;
 
   private animationFrameId: number | null = null;
@@ -136,7 +138,7 @@ export class StudioScene {
       const renderPass = new RenderPass(this.scene, this.camera);
       this.composer.addPass(renderPass);
 
-      // UnrealBloomPass for emissive monitors & holograms
+      // 1. UnrealBloomPass for emissive monitors & holograms
       this.bloomPass = new UnrealBloomPass(
         new THREE.Vector2(width, height),
         0.5,   // strength
@@ -144,9 +146,14 @@ export class StudioScene {
         0.75   // threshold
       );
       this.composer.addPass(this.bloomPass);
+
+      // 2. Vertex3D-Style Cinematic Pass: Fluid mouse ripple + chromatic aberration + 24fps film grain + lens vignette
+      this.cinematicPass = new CinematicPostPass(width, height);
+      this.composer.addPass(this.cinematicPass.pass);
     } catch (e) {
       console.warn("Postprocessing bloom unsupported, using standard renderer.", e);
       this.composer = null;
+      this.cinematicPass = null;
     }
   }
 
@@ -162,6 +169,9 @@ export class StudioScene {
     this.renderer.setSize(width, height);
     if (this.composer) {
       this.composer.setSize(width, height);
+    }
+    if (this.cinematicPass) {
+      this.cinematicPass.updateSize(width, height);
     }
   }
 
@@ -194,6 +204,11 @@ export class StudioScene {
         this.environment.update(delta, elapsedTime);
       }
 
+      // Update fluid ripple simulation, grain, and chromatic aberration
+      if (this.cinematicPass) {
+        this.cinematicPass.update(delta, elapsedTime);
+      }
+
       // Trigger custom tick hooks (e.g. camera, floating holograms)
       if (this.onTick) {
         this.onTick(delta, elapsedTime);
@@ -216,6 +231,18 @@ export class StudioScene {
 
   public setMouseOffset(normalizedX: number, normalizedY: number): void {
     this.cameraController.setMouseOffset(normalizedX, normalizedY);
+  }
+
+  public onCursorMove(uvX: number, uvY: number, now: number): void {
+    if (this.cinematicPass) {
+      this.cinematicPass.addCursorMovement(uvX, uvY, now);
+    }
+  }
+
+  public onCursorClick(uvX: number, uvY: number): void {
+    if (this.cinematicPass) {
+      this.cinematicPass.spawnRipple(uvX, uvY, 1.0);
+    }
   }
 
   public destroy(): void {
