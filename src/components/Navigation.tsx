@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Download, Menu, X } from "lucide-react";
 
-const Navigation = () => {
+interface NavigationProps {
+  is3DEnabled?: boolean;
+  onToggle3D?: () => void;
+}
+
+const Navigation: React.FC<NavigationProps> = ({ is3DEnabled = true, onToggle3D }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -64,6 +69,23 @@ const Navigation = () => {
 
           {/* CTA & Mobile Toggle */}
           <div className="flex items-center gap-3">
+            {/* 3D Lab Toggle Button */}
+            {onToggle3D && (
+              <button
+                type="button"
+                onClick={onToggle3D}
+                title={is3DEnabled ? "Turn off 3D background canvas" : "Turn on 3D background canvas"}
+                className={`hidden sm:flex items-center gap-2 px-3 h-9 rounded-xl border text-xs font-mono font-semibold transition-all ${
+                  is3DEnabled
+                    ? "bg-cyan-500/15 border-cyan-500/40 text-cyan-400 shadow-sm shadow-cyan-500/20"
+                    : "bg-card/40 border-border/40 text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${is3DEnabled ? "bg-cyan-400 animate-pulse" : "bg-slate-500"}`} />
+                3D LAB {is3DEnabled ? "ON" : "OFF"}
+              </button>
+            )}
+
             <a
               href="Ravi_Patel_Resume.pdf"
               download="Ravi_Patel_Resume.pdf"
@@ -101,7 +123,21 @@ const Navigation = () => {
                 {item.label}
               </button>
             ))}
-            <div className="pt-3 border-t border-border/40">
+            <div className="pt-3 border-t border-border/40 flex flex-col gap-3">
+              {onToggle3D && (
+                <button
+                  type="button"
+                  onClick={onToggle3D}
+                  className={`flex items-center justify-center gap-2 py-2 px-3 rounded-xl border text-xs font-mono font-semibold transition-all ${
+                    is3DEnabled
+                      ? "bg-cyan-500/15 border-cyan-500/40 text-cyan-400"
+                      : "bg-card/40 border-border/40 text-muted-foreground"
+                  }`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${is3DEnabled ? "bg-cyan-400 animate-pulse" : "bg-slate-500"}`} />
+                  3D SPATIAL LAB: {is3DEnabled ? "ENABLED" : "DISABLED"}
+                </button>
+              )}
               <a
                 href="Ravi_Patel_Resume.pdf"
                 download="Ravi_Patel_Resume.pdf"
