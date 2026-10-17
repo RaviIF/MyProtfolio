@@ -37,16 +37,16 @@ const Experience = () => {
   ];
 
   return (
-    <section id="experience" className="py-24 bg-navy-dark/30 relative">
+    <section id="experience" className="py-28 relative">
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
           {/* Section Header */}
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <div className="text-center mb-14">
+            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
               Work <span className="gradient-text">Experience</span>
             </h2>
-            <div className="w-20 h-1 bg-primary mx-auto mb-6" />
-            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
+            <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-indigo-500 mx-auto mb-6 rounded-full" />
+            <p className="text-zinc-400 text-base md:text-lg max-w-2xl mx-auto">
               Production engineering career building mission-critical medical XR, automated procedural 3D engines, and clinical healthcare platforms.
             </p>
           </div>
@@ -55,25 +55,27 @@ const Experience = () => {
             {experiences.map((exp, index) => (
               <Card
                 key={index}
-                className="p-8 md:p-10 bg-card/40 backdrop-blur-md border-border/50 hover:border-primary/50 transition-all shadow-xl rounded-2xl"
+                className="p-8 md:p-10 rounded-3xl bg-[#0D0F1A]/85 backdrop-blur-xl border border-white/[0.08] hover:border-cyan-500/40 transition-all duration-300 shadow-2xl relative overflow-hidden"
               >
+                <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-60" />
+
                 <div className="flex flex-col md:flex-row gap-6 items-start">
                   <div className="flex-shrink-0">
-                    <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center border border-primary/30">
-                      <Briefcase className="w-7 h-7 text-primary" />
+                    <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
+                      <Briefcase className="w-7 h-7 text-cyan-400" />
                     </div>
                   </div>
 
                   <div className="flex-1 w-full">
                     {/* Header: Title, Company, Period */}
-                    <div className="flex flex-wrap justify-between items-start mb-3 gap-2">
+                    <div className="flex flex-wrap justify-between items-start mb-3 gap-3">
                       <div>
-                        <h3 className="text-2xl font-bold text-foreground mb-1">
+                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-1">
                           {exp.title}
                         </h3>
-                        <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground font-medium">
-                          <span className="flex items-center gap-1.5 text-foreground/90">
-                            <Building2 className="w-4 h-4 text-primary" />
+                        <div className="flex flex-wrap items-center gap-3 text-sm text-zinc-400 font-medium">
+                          <span className="flex items-center gap-1.5 text-zinc-200">
+                            <Building2 className="w-4 h-4 text-cyan-400" />
                             {exp.company}
                           </span>
                           <span>•</span>
@@ -81,28 +83,26 @@ const Experience = () => {
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        <span className="px-3.5 py-1 bg-primary/10 text-primary border border-primary/30 rounded-full text-xs font-semibold flex items-center gap-1.5">
-                          <Calendar className="w-3.5 h-3.5" />
-                          {exp.period}
-                        </span>
-                      </div>
+                      <span className="px-3.5 py-1 bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 rounded-full text-xs font-semibold flex items-center gap-1.5 font-mono">
+                        <Calendar className="w-3.5 h-3.5" />
+                        {exp.period}
+                      </span>
                     </div>
 
                     {/* Role Description */}
-                    <p className="text-foreground/90 text-sm md:text-base leading-relaxed mb-6 font-medium">
+                    <p className="text-zinc-200 text-sm md:text-base leading-relaxed mb-6 font-normal">
                       {exp.description}
                     </p>
 
                     {/* Highlights List */}
-                    <div className="space-y-2.5 pt-4 border-t border-border/40">
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-primary mb-3">
+                    <div className="space-y-3 pt-5 border-t border-white/[0.08]">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-3">
                         Key Engineering Feats & Contributions
                       </h4>
                       {exp.highlights.map((highlight, idx) => (
                         <div key={idx} className="flex items-start gap-3">
-                          <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-1" />
-                          <span className="text-sm text-foreground/80 leading-relaxed">
+                          <CheckCircle2 className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-1" />
+                          <span className="text-sm text-zinc-300 leading-relaxed">
                             {highlight}
                           </span>
                         </div>

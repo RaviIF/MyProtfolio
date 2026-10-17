@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { CheckCircle2, Box, Radio, ShieldCheck, Eye } from "lucide-react";
+import { CheckCircle2, Box, Radio, ShieldCheck, Eye, Sparkles } from "lucide-react";
 
 const About = () => {
   const competencies = [
@@ -26,44 +26,49 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="py-24 relative">
+    <section id="about" className="py-28 relative">
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
           {/* Section Header */}
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-4">
+              <Sparkles className="w-3.5 h-3.5" /> Engineering Profile
+            </div>
+            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
               About <span className="gradient-text">Me</span>
             </h2>
-            <div className="w-20 h-1 bg-primary mx-auto mb-6" />
+            <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-indigo-500 mx-auto mb-6 rounded-full" />
           </div>
 
-          <Card className="p-8 md:p-10 bg-card/40 backdrop-blur-md border-border/50 rounded-2xl shadow-xl">
-            <p className="text-lg md:text-xl text-foreground/90 leading-relaxed mb-6 font-normal">
-              I am a <strong className="text-primary font-semibold">Software and Game Developer</strong> with 3+ years of production experience building high-performance 3D applications, spatial computing (XR) platforms, and edge computer-vision systems across <strong className="text-foreground">Unity (C#)</strong>, <strong className="text-foreground">Unreal Engine 5 (C++)</strong>, and <strong className="text-foreground">Three.js / WebGL</strong>.
+          <Card className="p-8 md:p-12 rounded-3xl bg-[#0D0F1A]/85 backdrop-blur-xl border border-white/[0.08] shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 left-1/3 right-1/3 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-70" />
+
+            <p className="text-lg md:text-xl text-zinc-100 leading-relaxed mb-6 font-normal">
+              I am a <strong className="text-cyan-400 font-semibold">Software and Game Developer</strong> with 3+ years of production experience building high-performance 3D applications, spatial computing (XR) platforms, and edge computer-vision systems across <strong className="text-white">Unity (C#)</strong>, <strong className="text-white">Unreal Engine 5 (C++)</strong>, and <strong className="text-white">Three.js / WebGL</strong>.
             </p>
 
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-10">
-              My engineering work spans mission-critical medical technology — such as solo-building <strong className="text-foreground/90">SmartScopy</strong> to stream live surgical endoscopy feeds into XR headsets with 3D anatomical overlays — to clinical healthcare platforms like <strong className="text-foreground/90">NoPainHeals</strong> (12+ interactive floor-projection games, zero-trust E2EE telemetry, and hardened Linux kiosks), and <strong className="text-foreground/90">MimadimPlus</strong> (automated procedural CAD-to-3D architectural generation in UE5).
+            <p className="text-base md:text-lg text-zinc-400 leading-relaxed mb-10">
+              My engineering work spans mission-critical medical technology — such as solo-building <strong className="text-zinc-200">SmartScopy</strong> to stream live surgical endoscopy feeds into XR headsets with 3D anatomical overlays — to clinical healthcare platforms like <strong className="text-zinc-200">NoPainHeals</strong> (12+ interactive floor-projection games, zero-trust E2EE telemetry, and hardened Linux kiosks), and <strong className="text-zinc-200">MimadimPlus</strong> (automated procedural CAD-to-3D architectural generation in UE5).
             </p>
 
             {/* Core Competency Pillars */}
-            <div className="grid md:grid-cols-2 gap-5 pt-4 border-t border-border/40">
+            <div className="grid md:grid-cols-2 gap-5 pt-6 border-t border-white/[0.08]">
               {competencies.map((comp, index) => {
                 const Icon = comp.icon;
                 return (
                   <div
                     key={index}
-                    className="p-5 rounded-xl bg-card/50 border border-border/40 hover:border-primary/40 transition-colors"
+                    className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-cyan-500/40 transition-all hover:bg-white/[0.04]"
                   >
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-9 h-9 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-5 h-5 text-primary" />
+                    <div className="flex items-center gap-3.5 mb-2.5">
+                      <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center flex-shrink-0">
+                        <Icon className="w-5 h-5 text-cyan-400" />
                       </div>
-                      <h3 className="text-base font-bold text-foreground">
+                      <h3 className="text-base font-bold text-white">
                         {comp.title}
                       </h3>
                     </div>
-                    <p className="text-sm text-muted-foreground leading-normal pl-12">
+                    <p className="text-sm text-zinc-400 leading-relaxed pl-13">
                       {comp.description}
                     </p>
                   </div>

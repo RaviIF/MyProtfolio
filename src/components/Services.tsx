@@ -34,7 +34,7 @@ const Services = () => {
         "Commercial rehabilitation stations, multi-modal floor projections, and zero-trust encrypted telemetry for clinical deployments.",
       features: [
         "Hardened Linux (Ubuntu) & Windows Electron kiosk architectures",
-        "Zero-trust E2E encryption tunnel (X25519, HKDF-SHA256, AES-256-GCM)",
+        "Zero-trust E2EE crypto tunnel (X25519, HKDF-SHA256, AES-256-GCM)",
         "Offline-first IndexedDB metric sync queues with automatic retries",
         "Modular Three.js / WebGL architecture and AI voice recognition"
       ]
@@ -54,16 +54,16 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-24 relative">
+    <section id="services" className="py-28 relative">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           {/* Section Header */}
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <div className="text-center mb-14">
+            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
               Engineering <span className="gradient-text">Services & Capabilities</span>
             </h2>
-            <div className="w-20 h-1 bg-primary mx-auto mb-6" />
-            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
+            <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-indigo-500 mx-auto mb-6 rounded-full" />
+            <p className="text-zinc-400 text-base md:text-lg max-w-2xl mx-auto">
               Specialized engineering consulting and end-to-end development for spatial computing, procedural 3D, and clinical kiosk hardware.
             </p>
           </div>
@@ -74,25 +74,27 @@ const Services = () => {
               return (
                 <Card
                   key={index}
-                  className="p-8 bg-card/40 backdrop-blur-md border-border/50 hover:border-primary/50 transition-all rounded-2xl shadow-xl flex flex-col justify-between"
+                  className="p-8 md:p-10 rounded-3xl bg-[#0D0F1A]/85 backdrop-blur-xl border border-white/[0.08] hover:border-cyan-500/40 transition-all duration-300 shadow-2xl flex flex-col justify-between hover:-translate-y-1 relative overflow-hidden"
                 >
+                  <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-60" />
+
                   <div>
-                    <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center mb-6 border border-primary/30">
-                      <Icon className="w-7 h-7 text-primary" />
+                    <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center mb-6">
+                      <Icon className="w-7 h-7 text-cyan-400" />
                     </div>
 
-                    <h3 className="text-2xl font-bold text-foreground mb-3">
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
                       {service.title}
                     </h3>
-                    <p className="text-muted-foreground mb-6 text-sm md:text-base leading-relaxed">
+                    <p className="text-zinc-400 mb-6 text-sm md:text-base leading-relaxed">
                       {service.description}
                     </p>
 
-                    <ul className="space-y-3 pt-4 border-t border-border/30">
+                    <ul className="space-y-3 pt-5 border-t border-white/[0.08]">
                       {service.features.map((feature, idx) => (
                         <li key={idx} className="flex items-start gap-3">
-                          <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-1" />
-                          <span className="text-sm text-foreground/80 leading-relaxed">
+                          <CheckCircle2 className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-1" />
+                          <span className="text-sm text-zinc-300 leading-relaxed">
                             {feature}
                           </span>
                         </li>

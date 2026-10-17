@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { Box, Glasses, Code2, Eye, ShieldCheck, MonitorCheck } from "lucide-react";
+import { Box, Glasses, Code2, Eye, ShieldCheck, MonitorCheck, Cpu } from "lucide-react";
 
 const Skills = () => {
   const skillCategories = [
@@ -88,16 +88,16 @@ const Skills = () => {
   ];
 
   return (
-    <section id="skills" className="py-24 relative">
+    <section id="skills" className="py-28 relative">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           {/* Section Header */}
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <div className="text-center mb-14">
+            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
               Skills & <span className="gradient-text">Core Technologies</span>
             </h2>
-            <div className="w-20 h-1 bg-primary mx-auto mb-6" />
-            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
+            <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-indigo-500 mx-auto mb-6 rounded-full" />
+            <p className="text-zinc-400 text-base md:text-lg max-w-2xl mx-auto">
               Production-tested toolkit spanning real-time 3D simulation, spatial computing, low-latency video streaming, and hardened cryptographic infrastructure.
             </p>
           </div>
@@ -108,23 +108,23 @@ const Skills = () => {
               return (
                 <Card
                   key={index}
-                  className="p-6 bg-card/40 backdrop-blur-md border-border/50 hover:border-primary/50 transition-all rounded-2xl shadow-lg flex flex-col justify-between group"
+                  className="p-7 rounded-2xl bg-[#0D0F1A]/85 backdrop-blur-xl border border-white/[0.08] hover:border-cyan-500/40 transition-all duration-300 shadow-xl flex flex-col justify-between group hover:-translate-y-1"
                 >
                   <div>
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-11 h-11 rounded-xl bg-primary/20 flex items-center justify-center group-hover:bg-primary/30 transition-colors border border-primary/30">
-                        <Icon className="w-5 h-5 text-primary" />
+                    <div className="flex items-center gap-3.5 mb-5">
+                      <div className="w-11 h-11 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors">
+                        <Icon className="w-5 h-5 text-cyan-400" />
                       </div>
-                      <h3 className="text-lg font-bold text-foreground">
+                      <h3 className="text-lg font-bold text-white">
                         {category.title}
                       </h3>
                     </div>
 
-                    <div className="flex flex-wrap gap-1.5 pt-2 border-t border-border/30">
+                    <div className="flex flex-wrap gap-1.5 pt-3 border-t border-white/[0.08]">
                       {category.skills.map((skill, idx) => (
                         <span
                           key={idx}
-                          className="px-2.5 py-1 bg-muted/40 text-foreground/80 rounded-md text-xs border border-border/30 font-medium"
+                          className="px-2.5 py-1 bg-white/[0.04] text-zinc-300 rounded-md text-xs border border-white/[0.08] font-medium group-hover:border-white/15 transition-colors"
                         >
                           {skill}
                         </span>
