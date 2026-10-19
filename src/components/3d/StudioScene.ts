@@ -39,7 +39,7 @@ export class StudioScene {
     this.scene.fog = new THREE.FogExp2(0x04060d, 0.035);
 
     this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    this.camera.position.set(0.0, 3.2, 8.5);
+    this.camera.position.set(0.2, 2.7, 7.8);
 
     this.cameraController = new CameraController(this.camera);
     this.clock = new THREE.Clock();
