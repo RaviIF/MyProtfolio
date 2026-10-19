@@ -61,26 +61,6 @@ function createNeonCanvas(
   return texture;
 }
 
-// Procedural glowing particle dot texture (Vertex3D bubble texture)
-function createBubbleSpriteTexture(): THREE.CanvasTexture {
-  const canvas = document.createElement("canvas");
-  canvas.width = 64;
-  canvas.height = 64;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return new THREE.CanvasTexture(canvas);
-
-  const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
-  grad.addColorStop(0, "rgba(255, 255, 255, 1.0)");
-  grad.addColorStop(0.35, "rgba(255, 255, 255, 0.85)");
-  grad.addColorStop(0.7, "rgba(255, 255, 255, 0.25)");
-  grad.addColorStop(1, "rgba(255, 255, 255, 0.0)");
-
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, 64, 64);
-
-  const texture = new THREE.CanvasTexture(canvas);
-  return texture;
-}
 
 // Procedural holographic 3D card canvas texture generator
 function createHologramCardCanvas(
@@ -450,177 +430,17 @@ export function createCyberpunkEnvironment(): CyberpunkEnvironment {
   group.add(rainLines);
   disposables.push(rainGeo, rainMat);
 
-  // =========================================================================
-  // 7. VERTEX3D EXACT 3D INTERACTIVE PARTICLE FORCE FIELD (`LogoBubbles.js`)
-  // =========================================================================
-  const BUBBLE_COUNT = 1800;
-  const bubbleSpriteTex = createBubbleSpriteTexture();
-  disposables.push(bubbleSpriteTex);
-
-  const bubbleGeo = new THREE.BufferGeometry();
-  const basePos = new Float32Array(BUBBLE_COUNT * 3);
-  const curPos = new Float32Array(BUBBLE_COUNT * 3);
-  const velocities = new Float32Array(BUBBLE_COUNT * 3);
-  const bubbleColors = new Float32Array(BUBBLE_COUNT * 3);
-
-  for (let i = 0; i < BUBBLE_COUNT; i++) {
-    // Distribute throughout the 3D street corridor around cards
-    const x = (Math.random() - 0.5) * 9.0;
-    const y = 0.8 + Math.random() * 6.5;
-    const z = 7.0 - Math.random() * 42.0; // spans Z = +7 to -35
-
-    basePos[i * 3 + 0] = x;
-    basePos[i * 3 + 1] = y;
-    basePos[i * 3 + 2] = z;
-
-    curPos[i * 3 + 0] = x;
-    curPos[i * 3 + 1] = y;
-    curPos[i * 3 + 2] = z;
-
-    velocities[i * 3 + 0] = 0;
-    velocities[i * 3 + 1] = 0;
-    velocities[i * 3 + 2] = 0;
-
-    // Glowing Cyber Palette (Cyan, Hot Pink, Amber Gold)
-    const randColor = Math.random();
-    if (randColor > 0.55) {
-      // Electric Cyan
-      bubbleColors[i * 3 + 0] = 0.0;
-      bubbleColors[i * 3 + 1] = 0.95;
-      bubbleColors[i * 3 + 2] = 1.0;
-    } else if (randColor > 0.22) {
-      // Hot Magenta / Pink
-      bubbleColors[i * 3 + 0] = 1.0;
-      bubbleColors[i * 3 + 1] = 0.05;
-      bubbleColors[i * 3 + 2] = 0.65;
-    } else {
-      // Neon Gold / Amber
-      bubbleColors[i * 3 + 0] = 1.0;
-      bubbleColors[i * 3 + 1] = 0.72;
-      bubbleColors[i * 3 + 2] = 0.0;
-    }
-  }
-
-  bubbleGeo.setAttribute("position", new THREE.BufferAttribute(curPos, 3));
-  bubbleGeo.setAttribute("color", new THREE.BufferAttribute(bubbleColors, 3));
-
-  const bubbleMat = new THREE.PointsMaterial({
-    size: 0.22,
-    map: bubbleSpriteTex,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.88,
-    blending: THREE.AdditiveBlending,
-    depthWrite: false,
-  });
-  const bubblePoints = new THREE.Points(bubbleGeo, bubbleMat);
-  group.add(bubblePoints);
-  disposables.push(bubbleGeo, bubbleMat);
-
-  // 3D Mouse Raycast State
-  const target3DMouse = new THREE.Vector3(0, 3, 0);
-  const smooth3DMouse = new THREE.Vector3(0, 3, 0);
-  const raycaster = new THREE.Raycaster();
-  const screenVec = new THREE.Vector2(0, 0);
-  const planeTarget = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0); // Intersection plane
-
   // ==========================================
-  // UPDATE LOOP (Particle Physics & Scene Motion)
+  // UPDATE LOOP (Scene Motion)
   // ==========================================
   const update = (
     delta: number,
     elapsed: number,
-    mouseNormX: number,
-    mouseNormY: number,
-    camera?: THREE.PerspectiveCamera
+    _mouseNormX: number,
+    _mouseNormY: number,
+    _camera?: THREE.PerspectiveCamera
   ) => {
-    // 1. Raycast mouse into 3D world space (Vertex3D ScreenToWorld logic)
-    if (camera) {
-      screenVec.set(mouseNormX, mouseNormY);
-      raycaster.setFromCamera(screenVec, camera);
-
-      // Intersect ray with plane at active card depth (~ camera.position.z - 5)
-      planeTarget.constant = -(camera.position.z - 5.5);
-      const intersection = new THREE.Vector3();
-      if (raycaster.ray.intersectPlane(planeTarget, intersection)) {
-        target3DMouse.copy(intersection);
-      }
-    }
-
-    // Smooth 3D mouse tracking with inertia (Vertex3D 0.18 ease)
-    smooth3DMouse.lerp(target3DMouse, 0.18);
-
-    // 2. Vertex3D Force-Field Repulsion & Elastic Spring Physics (`LogoBubbles.js`)
-    const posAttr = bubbleGeo.attributes.position as THREE.BufferAttribute;
-    const positions = posAttr.array as Float32Array;
-
-    const INTERACTION_RADIUS = 3.2;
-    const RADIUS_SQ = INTERACTION_RADIUS * INTERACTION_RADIUS;
-    const PUSH_SPEED = 18.0 * delta;
-    const RETURN_SPEED = 4.5 * delta;
-    const DAMPING = 0.86;
-
-    const mX = smooth3DMouse.x;
-    const mY = smooth3DMouse.y;
-    const mZ = smooth3DMouse.z;
-
-    for (let i = 0; i < BUBBLE_COUNT; i++) {
-      const idx = i * 3;
-      const bX = basePos[idx + 0];
-      const bY = basePos[idx + 1];
-      const bZ = basePos[idx + 2];
-
-      let cX = positions[idx + 0];
-      let cY = positions[idx + 1];
-      let cZ = positions[idx + 2];
-
-      let vX = velocities[idx + 0];
-      let vY = velocities[idx + 1];
-      let vZ = velocities[idx + 2];
-
-      // Distance from smoothed 3D cursor to particle
-      const dX = cX - mX;
-      const dY = cY - mY;
-      const dZ = cZ - mZ;
-      const distSq = dX * dX + dY * dY + dZ * dZ;
-
-      // Physical 3D Repulsion Force
-      if (distSq < RADIUS_SQ) {
-        const dist = Math.sqrt(distSq) || 0.001;
-        const force = (1.0 - dist / INTERACTION_RADIUS) * PUSH_SPEED;
-        vX += (dX / dist) * force;
-        vY += (dY / dist) * force;
-        vZ += (dZ / dist) * force;
-      }
-
-      // Elastic Spring Return to Base Position
-      vX += (bX - cX) * RETURN_SPEED;
-      vY += (bY - cY) * RETURN_SPEED;
-      vZ += (bZ - cZ) * RETURN_SPEED;
-
-      // Friction / Inertial Damping
-      vX *= DAMPING;
-      vY *= DAMPING;
-      vZ *= DAMPING;
-
-      // Subtle ambient harmonic float
-      const ambientFloat = Math.sin(elapsed * 1.8 + i * 0.3) * 0.0015;
-
-      cX += vX + ambientFloat;
-      cY += vY + ambientFloat;
-      cZ += vZ;
-
-      positions[idx + 0] = cX;
-      positions[idx + 1] = cY;
-      positions[idx + 2] = cZ;
-
-      velocities[idx + 0] = vX;
-      velocities[idx + 1] = vY;
-      velocities[idx + 2] = vZ;
-    }
-    posAttr.needsUpdate = true;
-
-    // 3. Levitation bobbing on 3D holographic cards
+    // 1. Levitation bobbing on 3D holographic cards
     hologramCards.forEach((card) => {
       card.group.position.y =
         card.initialY + Math.sin(elapsed * card.bobSpeed + card.bobOffset) * 0.07;
