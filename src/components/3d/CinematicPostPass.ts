@@ -52,14 +52,14 @@ export const CinematicShader = {
         float dist = length(diff);
         float age = uRippleAges[i];
 
-        if (age < 1.2 && dist < 0.65) {
-          // Outward expanding harmonic wave
-          float wave = sin(dist * 26.0 - age * 8.5);
-          // Spatial falloff + exponential time decay
-          float envelope = exp(-dist * 5.2) * exp(-age * 2.1);
+        if (age < 0.95 && dist < 0.5) {
+          // Thin, high-frequency harmonic wave (delicate water ripple)
+          float wave = sin(dist * 68.0 - age * 12.5);
+          // Tight spatial falloff + clean exponential decay
+          float envelope = exp(-dist * 8.5) * exp(-age * 2.8);
           vec2 dir = dist > 0.0001 ? normalize(diff) : vec2(0.0);
           dir.x /= uAspect; // revert aspect scaling for UV displacement
-          rippleOffset += dir * (wave * envelope * uRippleIntensities[i] * 0.042);
+          rippleOffset += dir * (wave * envelope * uRippleIntensities[i] * 0.016);
         }
       }
 
@@ -67,8 +67,8 @@ export const CinematicShader = {
       float distCenter = length(centerDiff);
       vec2 radialDir = distCenter > 0.0001 ? normalize(centerDiff) : vec2(0.0);
 
-      // 2. Optical Lens Chromatic Aberration (Radial + Ripple Smear)
-      vec2 chromOffset = radialDir * (distCenter * distCenter * 0.0055) + rippleOffset * 0.38;
+      // 2. Optical Lens Chromatic Aberration (Radial + Subtle Prismatic Wave Edge)
+      vec2 chromOffset = radialDir * (distCenter * distCenter * 0.004) + rippleOffset * 0.22;
 
       vec2 uvR = clamp(vUv + rippleOffset + chromOffset, 0.0, 1.0);
       vec2 uvG = clamp(vUv + rippleOffset, 0.0, 1.0);
@@ -79,9 +79,9 @@ export const CinematicShader = {
       vec4 colB = texture2D(tDiffuse, uvB);
       vec3 color = vec3(colR.r, colG.g, colB.b);
 
-      // 3. Optical Refraction Cyan/White Glow on Fluid Crests
+      // 3. Delicate Optical Refraction Sheen on Thin Wave Crests
       float rippleMag = length(rippleOffset);
-      color += vec3(0.12, 0.28, 0.36) * (rippleMag * 6.8);
+      color += vec3(0.08, 0.22, 0.32) * (rippleMag * 4.2);
 
       // 4. Stepped 24 FPS Film Grain (Eliminates banding, adds velvety tactile texture)
       float steppedTime = floor(uTime * 24.0) / 24.0;
@@ -156,7 +156,7 @@ export class CinematicPostPass {
     for (let i = 0; i < this.ripples.length; i++) {
       this.ripples[i].age += delta;
     }
-    this.ripples = this.ripples.filter((r) => r.age < 1.2);
+    this.ripples = this.ripples.filter((r) => r.age < 0.95);
 
     // Update shader uniforms
     const count = Math.min(this.ripples.length, MAX_RIPPLES);
