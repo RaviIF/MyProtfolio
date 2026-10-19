@@ -3,9 +3,8 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { CinematicPostPass } from "./CinematicPostPass";
-import { HologramStages } from "./HologramStages";
-import { StudioSceneOptions, ShaderViewportMode } from "./types";
-import { createStudioEnvironment, StudioEnvironment } from "./StudioObjects";
+import { StudioSceneOptions } from "./types";
+import { createMetropolisEnvironment, MetropolisEnvironment } from "./MetropolisObjects";
 import { CameraController } from "./CameraController";
 
 export class StudioScene {
@@ -17,11 +16,9 @@ export class StudioScene {
   private composer: EffectComposer | null = null;
   private bloomPass: UnrealBloomPass | null = null;
   private cinematicPass: CinematicPostPass | null = null;
-  private environment: StudioEnvironment | null = null;
-  private hologramStages: HologramStages | null = null;
+  private environment: MetropolisEnvironment | null = null;
 
   public activeStationId = "home";
-  public viewportMode: ShaderViewportMode = "lit";
   private cursorU = 0.5;
   private cursorV = 0.5;
   private mouseNormX = 0;
@@ -39,10 +36,10 @@ export class StudioScene {
 
   constructor() {
     this.scene = new THREE.Scene();
-    this.scene.fog = new THREE.FogExp2(0x07080d, 0.05);
+    this.scene.fog = new THREE.FogExp2(0x060812, 0.038);
 
     this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    this.camera.position.set(0, 1.4, 3.2);
+    this.camera.position.set(0.0, 14.0, 18.0);
 
     this.cameraController = new CameraController(this.camera);
     this.clock = new THREE.Clock();
@@ -86,21 +83,14 @@ export class StudioScene {
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
 
-      // 3. Lighting Rig
+      // 3. Lighting Rig (Hybrid Twilight)
       this.setupLighting();
 
-      // 4. Studio Environment & Stations
-      this.environment = createStudioEnvironment();
+      // 4. Procedural Neo-Brutalist Metropolis Environment
+      this.environment = createMetropolisEnvironment();
       this.scene.add(this.environment.group);
 
-      // 4b. 4 Flagship Hologram Stages (SmartScopy, Mimadim, NoPainHeals, Motion AI)
-      this.hologramStages = new HologramStages();
-      this.scene.add(this.hologramStages.group);
-      if (options?.initialViewportMode) {
-        this.setViewportMode(options.initialViewportMode);
-      }
-
-      // 5. Post-processing Bloom
+      // 5. Post-processing Bloom & Cinematic Lens
       this.setupPostProcessing(width, height);
 
       // 6. Notify loaded
@@ -121,29 +111,24 @@ export class StudioScene {
   }
 
   private setupLighting(): void {
-    // Ambient fill
-    const ambientLight = new THREE.AmbientLight(0x0c1328, 0.9);
+    // 1. Twilight Ambient Fill
+    const ambientLight = new THREE.AmbientLight(0x0b1120, 1.1);
     this.scene.add(ambientLight);
 
-    // Directional Key Light (cool tech cyan/white)
-    const keyLight = new THREE.DirectionalLight(0xd8f8ff, 1.4);
-    keyLight.position.set(5, 8, 4);
-    this.scene.add(keyLight);
+    // 2. Key Sun Light (Warm 3500K Golden Sunbeam Source)
+    const sunLight = new THREE.DirectionalLight(0xf59e0b, 2.2);
+    sunLight.position.set(8, 16, 10);
+    this.scene.add(sunLight);
 
-    // Cyan station accent
-    const cyanPoint = new THREE.PointLight(0x22d3ee, 2.8, 16);
-    cyanPoint.position.set(-1.5, 2.2, 0.5);
-    this.scene.add(cyanPoint);
+    // 3. Cyan Rim Accent Light (Metropolis Blueprint Edges)
+    const cyanRim = new THREE.DirectionalLight(0x22d3ee, 1.8);
+    cyanRim.position.set(-6, 8, -4);
+    this.scene.add(cyanRim);
 
-    // Indigo / Violet accent
-    const violetPoint = new THREE.PointLight(0x818cf8, 2.5, 16);
-    violetPoint.position.set(2.2, 2.5, -1.0);
-    this.scene.add(violetPoint);
-
-    // Surgical medical emerald accent
-    const medicalPoint = new THREE.PointLight(0x10b981, 1.8, 12);
-    medicalPoint.position.set(-2.2, 1.8, -2.5);
-    this.scene.add(medicalPoint);
+    // 4. Amber Ground Bounce Accent
+    const amberAccent = new THREE.PointLight(0xfbbf24, 1.4, 25);
+    amberAccent.position.set(6, 4, -8);
+    this.scene.add(amberAccent);
   }
 
   private setupPostProcessing(width: number, height: number): void {
@@ -215,22 +200,9 @@ export class StudioScene {
       // Update camera along scroll spline + mouse parallax
       this.cameraController.update(this.scrollProgress, delta);
 
-      // Update 3D environment props (rotating holograms, pulsing LEDs, dust)
+      // Update Neo-Brutalist Metropolis Environment (god rays, motes, and blueprints)
       if (this.environment) {
-        this.environment.update(delta, elapsedTime);
-      }
-
-      // Update interactive hologram stages (laser scan, CAD extrusion, sensor floor, AI rig)
-      if (this.hologramStages) {
-        this.hologramStages.update({
-          activeStationId: this.activeStationId,
-          delta,
-          elapsed: elapsedTime,
-          mouseNormX: this.mouseNormX,
-          mouseNormY: this.mouseNormY,
-          cursorU: this.cursorU,
-          cursorV: this.cursorV,
-        });
+        this.environment.update(delta, elapsedTime, this.mouseNormX, this.mouseNormY);
       }
 
       // Update fluid ripple simulation, grain, and chromatic aberration
@@ -238,7 +210,7 @@ export class StudioScene {
         this.cinematicPass.update(delta, elapsedTime);
       }
 
-      // Trigger custom tick hooks (e.g. camera, floating holograms)
+      // Trigger custom tick hooks
       if (this.onTick) {
         this.onTick(delta, elapsedTime);
       }
@@ -256,13 +228,6 @@ export class StudioScene {
 
   public setActiveStation(stationId: string): void {
     this.activeStationId = stationId;
-  }
-
-  public setViewportMode(mode: ShaderViewportMode): void {
-    this.viewportMode = mode;
-    if (this.hologramStages) {
-      this.hologramStages.setViewportMode(mode);
-    }
   }
 
   public setScrollProgress(progress: number): void {
@@ -307,9 +272,9 @@ export class StudioScene {
       this.composer = null;
     }
 
-    if (this.hologramStages) {
-      this.hologramStages.dispose();
-      this.hologramStages = null;
+    if (this.environment) {
+      this.environment.dispose();
+      this.environment = null;
     }
 
     // Traverse and clean geometries / materials
@@ -324,7 +289,6 @@ export class StudioScene {
       }
     });
 
-    this.environment = null;
     this.scene.clear();
   }
 }

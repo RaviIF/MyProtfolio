@@ -1,18 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { StudioScene } from "./StudioScene";
 import { StudioLoader } from "./StudioLoader";
-import { ShaderViewportMode } from "./types";
 
 interface StudioCanvasProps {
   isEnabled?: boolean;
   activeStationId?: string;
-  viewportMode?: ShaderViewportMode;
 }
 
 export const StudioCanvas: React.FC<StudioCanvasProps> = ({
   isEnabled = true,
   activeStationId = "home",
-  viewportMode = "lit",
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<StudioScene | null>(null);
@@ -27,13 +24,6 @@ export const StudioCanvas: React.FC<StudioCanvasProps> = ({
       sceneRef.current.setActiveStation(activeStationId);
     }
   }, [activeStationId]);
-
-  // Synchronize game engine shader viewport mode
-  useEffect(() => {
-    if (sceneRef.current && viewportMode) {
-      sceneRef.current.setViewportMode(viewportMode);
-    }
-  }, [viewportMode]);
 
   useEffect(() => {
     if (!isEnabled || !containerRef.current) {
@@ -61,7 +51,6 @@ export const StudioCanvas: React.FC<StudioCanvasProps> = ({
     }, 80);
 
     const isInitialized = scene.init(containerRef.current, {
-      initialViewportMode: viewportMode,
       onLoaded: () => {
         clearInterval(progressInterval);
         setLoadingProgress(100);
