@@ -1,3 +1,4 @@
+import React, { useEffect, useRef, useState } from "react";
 import { StudioScene } from "./StudioScene";
 import { StudioLoader } from "./StudioLoader";
 import { ShaderViewportMode } from "./types";
