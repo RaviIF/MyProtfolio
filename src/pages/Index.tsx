@@ -10,6 +10,8 @@ import { SlideAbout } from "@/components/vertex/slides/SlideAbout";
 import { SlideProject } from "@/components/vertex/slides/SlideProject";
 import { SlideSkills } from "@/components/vertex/slides/SlideSkills";
 import { SlideContact } from "@/components/vertex/slides/SlideContact";
+import { ShaderViewportHUD } from "@/components/3d/ShaderViewportHUD";
+import { ShaderViewportMode } from "@/components/3d/types";
 import { PROJECTS_DATA, ProjectItem } from "@/data/projectsData";
 import { STATIONS } from "@/components/vertex/types";
 
@@ -21,6 +23,16 @@ const Index: React.FC = () => {
       return stored !== null ? stored === "true" : true;
     } catch {
       return true;
+    }
+  });
+
+  // Game Dev Shader Viewport Mode (LIT, WIREFRAME, X-RAY)
+  const [viewportMode, setViewportMode] = useState<ShaderViewportMode>(() => {
+    try {
+      const stored = localStorage.getItem("ravi_portfolio_viewport_mode");
+      return (stored as ShaderViewportMode) || "lit";
+    } catch {
+      return "lit";
     }
   });
 
@@ -39,6 +51,15 @@ const Index: React.FC = () => {
       // Ignore storage errors
     }
   }, [is3DEnabled]);
+
+  // Persist Viewport Mode
+  useEffect(() => {
+    try {
+      localStorage.setItem("ravi_portfolio_viewport_mode", viewportMode);
+    } catch {
+      // Ignore storage errors
+    }
+  }, [viewportMode]);
 
   // Active Section Scroll Spy
   useEffect(() => {
@@ -77,8 +98,17 @@ const Index: React.FC = () => {
 
   return (
     <div className="relative min-h-screen bg-[#06070a] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200 overflow-x-clip">
-      {/* 3D WebGL Spatial Tech Studio Viewport */}
-      <StudioCanvas isEnabled={is3DEnabled} />
+      {/* 3D WebGL Spatial Tech Studio Viewport with Dimension Morphing */}
+      <StudioCanvas
+        isEnabled={is3DEnabled}
+        activeStationId={activeStationId}
+        viewportMode={viewportMode}
+      />
+
+      {/* Game Engine Shader Viewport Mode HUD */}
+      {is3DEnabled && (
+        <ShaderViewportHUD mode={viewportMode} onModeChange={setViewportMode} />
+      )}
 
       {/* Vertex3D Fixed Left Navigation Rail */}
       <LeftNavRail
