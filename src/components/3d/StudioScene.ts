@@ -3,7 +3,8 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { CinematicPostPass } from "./CinematicPostPass";
-import { StudioSceneOptions } from "./types";
+import { HologramStages } from "./HologramStages";
+import { StudioSceneOptions, ShaderViewportMode } from "./types";
 import { createStudioEnvironment, StudioEnvironment } from "./StudioObjects";
 import { CameraController } from "./CameraController";
 
@@ -17,6 +18,14 @@ export class StudioScene {
   private bloomPass: UnrealBloomPass | null = null;
   private cinematicPass: CinematicPostPass | null = null;
   private environment: StudioEnvironment | null = null;
+  private hologramStages: HologramStages | null = null;
+
+  public activeStationId = "home";
+  public viewportMode: ShaderViewportMode = "lit";
+  private cursorU = 0.5;
+  private cursorV = 0.5;
+  private mouseNormX = 0;
+  private mouseNormY = 0;
 
   private animationFrameId: number | null = null;
   private isDestroyed = false;
@@ -84,6 +93,13 @@ export class StudioScene {
       this.environment = createStudioEnvironment();
       this.scene.add(this.environment.group);
 
+      // 4b. 4 Flagship Hologram Stages (SmartScopy, Mimadim, NoPainHeals, Motion AI)
+      this.hologramStages = new HologramStages();
+      this.scene.add(this.hologramStages.group);
+      if (options?.initialViewportMode) {
+        this.setViewportMode(options.initialViewportMode);
+      }
+
       // 5. Post-processing Bloom
       this.setupPostProcessing(width, height);
 
@@ -92,7 +108,7 @@ export class StudioScene {
         options.onLoaded();
       }
 
-      // 6. Start Loop
+      // 7. Start Loop
       this.startRenderLoop();
       return true;
     } catch (err) {
@@ -204,6 +220,19 @@ export class StudioScene {
         this.environment.update(delta, elapsedTime);
       }
 
+      // Update interactive hologram stages (laser scan, CAD extrusion, sensor floor, AI rig)
+      if (this.hologramStages) {
+        this.hologramStages.update({
+          activeStationId: this.activeStationId,
+          delta,
+          elapsed: elapsedTime,
+          mouseNormX: this.mouseNormX,
+          mouseNormY: this.mouseNormY,
+          cursorU: this.cursorU,
+          cursorV: this.cursorV,
+        });
+      }
+
       // Update fluid ripple simulation, grain, and chromatic aberration
       if (this.cinematicPass) {
         this.cinematicPass.update(delta, elapsedTime);
@@ -225,15 +254,30 @@ export class StudioScene {
     this.animationFrameId = requestAnimationFrame(animate);
   }
 
+  public setActiveStation(stationId: string): void {
+    this.activeStationId = stationId;
+  }
+
+  public setViewportMode(mode: ShaderViewportMode): void {
+    this.viewportMode = mode;
+    if (this.hologramStages) {
+      this.hologramStages.setViewportMode(mode);
+    }
+  }
+
   public setScrollProgress(progress: number): void {
     this.scrollProgress = progress;
   }
 
   public setMouseOffset(normalizedX: number, normalizedY: number): void {
+    this.mouseNormX = normalizedX;
+    this.mouseNormY = normalizedY;
     this.cameraController.setMouseOffset(normalizedX, normalizedY);
   }
 
   public onCursorMove(uvX: number, uvY: number, now: number): void {
+    this.cursorU = uvX;
+    this.cursorV = uvY;
     if (this.cinematicPass) {
       this.cinematicPass.addCursorMovement(uvX, uvY, now);
     }
@@ -261,6 +305,11 @@ export class StudioScene {
     if (this.composer) {
       this.composer.dispose();
       this.composer = null;
+    }
+
+    if (this.hologramStages) {
+      this.hologramStages.dispose();
+      this.hologramStages = null;
     }
 
     // Traverse and clean geometries / materials
