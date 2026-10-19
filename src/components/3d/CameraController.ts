@@ -5,50 +5,50 @@ export const DEFAULT_CAMERA_WAYPOINTS: CameraWaypoint[] = [
   {
     sectionId: "home",
     scrollProgress: 0.0,
-    position: new THREE.Vector3(0.0, 1.4, 3.2),
-    target: new THREE.Vector3(0.0, 1.15, 0.0),
+    position: new THREE.Vector3(0.0, 14.0, 18.0),
+    target: new THREE.Vector3(0.0, 4.0, 0.0),
   },
   {
     sectionId: "about",
     scrollProgress: 0.14,
-    position: new THREE.Vector3(2.0, 1.7, 1.8),
-    target: new THREE.Vector3(3.0, 1.1, -1.2),
+    position: new THREE.Vector3(3.5, 7.5, 10.0),
+    target: new THREE.Vector3(-1.0, 2.5, 0.0),
   },
   {
     sectionId: "smartscopy",
     scrollProgress: 0.28,
-    position: new THREE.Vector3(-2.4, 1.6, -0.6),
-    target: new THREE.Vector3(-3.5, 1.4, -2.8),
+    position: new THREE.Vector3(-4.5, 3.2, 5.0),
+    target: new THREE.Vector3(0.0, 2.8, -2.0),
   },
   {
     sectionId: "mimadim",
     scrollProgress: 0.43,
-    position: new THREE.Vector3(2.6, 1.5, 0.8),
-    target: new THREE.Vector3(3.2, 1.1, -1.2),
+    position: new THREE.Vector3(4.2, 2.8, 1.0),
+    target: new THREE.Vector3(-0.5, 1.5, -4.0),
   },
   {
     sectionId: "nopainheals",
     scrollProgress: 0.57,
-    position: new THREE.Vector3(-1.8, 1.4, -1.0),
-    target: new THREE.Vector3(-1.8, 1.0, -2.2),
+    position: new THREE.Vector3(-3.2, 2.2, -3.5),
+    target: new THREE.Vector3(1.0, 1.8, -7.0),
   },
   {
     sectionId: "vision-ai",
     scrollProgress: 0.71,
-    position: new THREE.Vector3(0.0, 1.5, 1.5),
-    target: new THREE.Vector3(0.0, 1.15, 0.0),
+    position: new THREE.Vector3(2.8, 4.5, -7.5),
+    target: new THREE.Vector3(-1.5, 3.0, -11.0),
   },
   {
     sectionId: "skills",
     scrollProgress: 0.85,
-    position: new THREE.Vector3(-0.6, 1.4, -3.6),
-    target: new THREE.Vector3(-1.6, 1.3, -6.0),
+    position: new THREE.Vector3(-1.0, 6.0, -12.0),
+    target: new THREE.Vector3(0.0, 3.5, -16.0),
   },
   {
     sectionId: "contact",
     scrollProgress: 1.0,
-    position: new THREE.Vector3(0.0, 3.0, 4.2),
-    target: new THREE.Vector3(0.0, 1.1, -2.0),
+    position: new THREE.Vector3(0.0, 12.0, -16.0),
+    target: new THREE.Vector3(0.0, 14.0, -32.0),
   },
 ];
 
@@ -82,7 +82,7 @@ export class CameraController {
 
   public setMouseOffset(normalizedX: number, normalizedY: number): void {
     // normalizedX and normalizedY in range [-1, 1]
-    this.mouseOffset.set(normalizedX * 0.25, normalizedY * 0.15);
+    this.mouseOffset.set(normalizedX * 0.6, normalizedY * 0.3);
   }
 
   public update(scrollProgress: number, delta: number): void {
