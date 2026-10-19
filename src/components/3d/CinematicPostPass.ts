@@ -8,7 +8,7 @@ export interface RipplePoint {
   intensity: number; // 0 to 1
 }
 
-const MAX_RIPPLES = 8;
+const MAX_RIPPLES = 16;
 
 export const CinematicShader = {
   uniforms: {
@@ -42,8 +42,9 @@ export const CinematicShader = {
 
     void main() {
       vec2 rippleOffset = vec2(0.0);
+      float crestGlow = 0.0;
 
-      // 1. Fluid Mouse Ripple Simulation (Vertex3D style)
+      // 1. Fluid Mouse Ripple Simulation (High-frequency, razor-thin, prominent rings)
       for (int i = 0; i < ${MAX_RIPPLES}; i++) {
         if (i >= uActiveRippleCount) break;
 
@@ -52,14 +53,16 @@ export const CinematicShader = {
         float dist = length(diff);
         float age = uRippleAges[i];
 
-        if (age < 0.95 && dist < 0.5) {
-          // Thin, high-frequency harmonic wave (delicate water ripple)
-          float wave = sin(dist * 68.0 - age * 12.5);
-          // Tight spatial falloff + clean exponential decay
-          float envelope = exp(-dist * 8.5) * exp(-age * 2.8);
+        if (age < 1.1 && dist < 0.65) {
+          // Sharp, high-frequency harmonic wave (thin distinct rings)
+          float wave = sin(dist * 74.0 - age * 15.0);
+          float envelope = exp(-dist * 6.5) * exp(-age * 2.4);
           vec2 dir = dist > 0.0001 ? normalize(diff) : vec2(0.0);
           dir.x /= uAspect; // revert aspect scaling for UV displacement
-          rippleOffset += dir * (wave * envelope * uRippleIntensities[i] * 0.016);
+          
+          float amp = wave * envelope * uRippleIntensities[i];
+          rippleOffset += dir * (amp * 0.036);
+          crestGlow += max(0.0, wave) * envelope * uRippleIntensities[i];
         }
       }
 
@@ -67,8 +70,8 @@ export const CinematicShader = {
       float distCenter = length(centerDiff);
       vec2 radialDir = distCenter > 0.0001 ? normalize(centerDiff) : vec2(0.0);
 
-      // 2. Optical Lens Chromatic Aberration (Radial + Subtle Prismatic Wave Edge)
-      vec2 chromOffset = radialDir * (distCenter * distCenter * 0.004) + rippleOffset * 0.22;
+      // 2. Pronounced Prismatic Chromatic Aberration along thin wave edges
+      vec2 chromOffset = radialDir * (distCenter * distCenter * 0.004) + rippleOffset * 0.72;
 
       vec2 uvR = clamp(vUv + rippleOffset + chromOffset, 0.0, 1.0);
       vec2 uvG = clamp(vUv + rippleOffset, 0.0, 1.0);
@@ -79,9 +82,10 @@ export const CinematicShader = {
       vec4 colB = texture2D(tDiffuse, uvB);
       vec3 color = vec3(colR.r, colG.g, colB.b);
 
-      // 3. Delicate Optical Refraction Sheen on Thin Wave Crests
+      // 3. Glowing Neon Wave Crests (Cyan/Magenta iridescent sheen)
       float rippleMag = length(rippleOffset);
-      color += vec3(0.08, 0.22, 0.32) * (rippleMag * 4.2);
+      color += vec3(0.16, 0.54, 0.88) * (rippleMag * 8.5);
+      color += vec3(0.92, 0.35, 0.85) * (crestGlow * 0.22);
 
       // 4. Stepped 24 FPS Film Grain (Eliminates banding, adds velvety tactile texture)
       float steppedTime = floor(uTime * 24.0) / 24.0;
@@ -127,17 +131,17 @@ export class CinematicPostPass {
     const dy = normY - this.lastY;
     const dist = Math.sqrt(dx * dx + dy * dy);
 
-    // Only spawn when moving with enough velocity and at least 45ms throttle
-    if (dist > 0.008 && now - this.lastSpawnTime > 0.045) {
-      const speed = Math.min(1.0, dist * 12.0);
-      this.spawnRipple(normX, normY, 0.4 + speed * 0.6);
+    // Spawn when moving cursor (fluid responsive throttle at 22ms)
+    if (dist > 0.004 && now - this.lastSpawnTime > 0.022) {
+      const speed = Math.min(1.0, dist * 14.0);
+      this.spawnRipple(normX, normY, 0.65 + speed * 0.35);
       this.lastSpawnTime = now;
       this.lastX = normX;
       this.lastY = normY;
     }
   }
 
-  public spawnRipple(x: number, y: number, intensity = 0.8): void {
+  public spawnRipple(x: number, y: number, intensity = 0.85): void {
     if (this.ripples.length >= MAX_RIPPLES) {
       this.ripples.shift(); // remove oldest
     }
@@ -156,7 +160,7 @@ export class CinematicPostPass {
     for (let i = 0; i < this.ripples.length; i++) {
       this.ripples[i].age += delta;
     }
-    this.ripples = this.ripples.filter((r) => r.age < 0.95);
+    this.ripples = this.ripples.filter((r) => r.age < 1.1);
 
     // Update shader uniforms
     const count = Math.min(this.ripples.length, MAX_RIPPLES);
