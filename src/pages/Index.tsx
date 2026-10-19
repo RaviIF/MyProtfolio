@@ -10,6 +10,7 @@ import { SlideAbout } from "@/components/vertex/slides/SlideAbout";
 import { SlideProject } from "@/components/vertex/slides/SlideProject";
 import { SlideSkills } from "@/components/vertex/slides/SlideSkills";
 import { SlideContact } from "@/components/vertex/slides/SlideContact";
+import { VertexCursor } from "@/components/vertex/VertexCursor";
 import { PROJECTS_DATA, ProjectItem } from "@/data/projectsData";
 import { STATIONS } from "@/components/vertex/types";
 
@@ -77,7 +78,10 @@ const Index: React.FC = () => {
 
   return (
     <div className="relative min-h-screen bg-[#06070a] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200 overflow-x-clip">
-      {/* 3D WebGL Neo-Brutalist Cyber-Metropolis Viewport */}
+      {/* Vertex3D Interactive Dual Spring Cursor */}
+      <VertexCursor />
+
+      {/* 3D WebGL Cyberpunk Viewport */}
       <StudioCanvas
         isEnabled={is3DEnabled}
         activeStationId={activeStationId}

@@ -112,26 +112,29 @@ export class CameraController {
     this.targetPosition.lerpVectors(wStart.position, wEnd.position, t);
     this.targetLookAt.lerpVectors(wStart.target, wEnd.target, t);
 
-    // 3. Smooth mouse parallax interpolation
-    const mouseLerpFactor = Math.min(1, delta * 3.5);
+    // 3. Smooth mouse parallax interpolation (Vertex3D 0.18 ease simulation)
+    const mouseLerpFactor = Math.min(1.0, delta * 5.2);
     this.currentMouseOffset.lerp(this.mouseOffset, mouseLerpFactor);
 
     // 4. Smooth camera lerp (smoother scroll follow)
-    const cameraLerpFactor = Math.min(1, delta * 4.0);
+    const cameraLerpFactor = Math.min(1.0, delta * 3.8);
     this.currentPosition.lerp(this.targetPosition, cameraLerpFactor);
     this.currentTarget.lerp(this.targetLookAt, cameraLerpFactor);
 
-    // 5. Apply to Three.js camera
+    // 5. Apply to Three.js camera with physical perspective orbit
     this.camera.position.set(
       this.currentPosition.x + this.currentMouseOffset.x,
-      this.currentPosition.y - this.currentMouseOffset.y,
+      this.currentPosition.y - this.currentMouseOffset.y * 0.75,
       this.currentPosition.z
     );
 
     this.camera.lookAt(
-      this.currentTarget.x,
-      this.currentTarget.y,
+      this.currentTarget.x + this.currentMouseOffset.x * 0.35,
+      this.currentTarget.y - this.currentMouseOffset.y * 0.35,
       this.currentTarget.z
     );
+
+    // Subtle physical banking roll
+    this.camera.rotation.z = -this.currentMouseOffset.x * 0.035;
   }
 }
