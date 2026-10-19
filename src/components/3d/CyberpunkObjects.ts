@@ -2,7 +2,13 @@ import * as THREE from "three";
 
 export interface CyberpunkEnvironment {
   group: THREE.Group;
-  update: (delta: number, elapsed: number, mouseNormX: number, mouseNormY: number) => void;
+  update: (
+    delta: number,
+    elapsed: number,
+    mouseNormX: number,
+    mouseNormY: number,
+    camera?: THREE.PerspectiveCamera
+  ) => void;
   dispose: () => void;
 }
 
@@ -21,23 +27,19 @@ function createNeonCanvas(
   const ctx = canvas.getContext("2d");
   if (!ctx) return new THREE.CanvasTexture(canvas);
 
-  // Dark backing panel
   ctx.fillStyle = "#030408";
   ctx.fillRect(0, 0, width, height);
 
-  // Outer neon frame
   ctx.strokeStyle = glowHex;
   ctx.lineWidth = 6;
   ctx.shadowColor = colorHex;
   ctx.shadowBlur = 18;
   ctx.strokeRect(14, 14, width - 28, height - 28);
 
-  // Inner subtle border
   ctx.strokeStyle = colorHex;
   ctx.lineWidth = 2;
   ctx.strokeRect(22, 22, width - 44, height - 44);
 
-  // Main neon title text
   ctx.fillStyle = "#ffffff";
   ctx.font = `bold ${Math.floor(height * 0.28)}px "Courier New", monospace, sans-serif`;
   ctx.textAlign = "center";
@@ -46,7 +48,6 @@ function createNeonCanvas(
   ctx.shadowBlur = 24;
   ctx.fillText(title, width / 2, height * 0.42);
 
-  // Subtitle / Japanese kana
   if (subtitle) {
     ctx.fillStyle = colorHex;
     ctx.font = `600 ${Math.floor(height * 0.14)}px monospace, sans-serif`;
@@ -57,6 +58,27 @@ function createNeonCanvas(
   const texture = new THREE.CanvasTexture(canvas);
   texture.generateMipmaps = true;
   texture.minFilter = THREE.LinearMipmapLinearFilter;
+  return texture;
+}
+
+// Procedural glowing particle dot texture (Vertex3D bubble texture)
+function createBubbleSpriteTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = 64;
+  canvas.height = 64;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return new THREE.CanvasTexture(canvas);
+
+  const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  grad.addColorStop(0, "rgba(255, 255, 255, 1.0)");
+  grad.addColorStop(0.35, "rgba(255, 255, 255, 0.85)");
+  grad.addColorStop(0.7, "rgba(255, 255, 255, 0.25)");
+  grad.addColorStop(1, "rgba(255, 255, 255, 0.0)");
+
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 64, 64);
+
+  const texture = new THREE.CanvasTexture(canvas);
   return texture;
 }
 
@@ -75,11 +97,9 @@ function createHologramCardCanvas(
   const ctx = canvas.getContext("2d");
   if (!ctx) return new THREE.CanvasTexture(canvas);
 
-  // 1. Semi-transparent dark tinted glass backing
   ctx.fillStyle = "rgba(4, 7, 16, 0.95)";
   ctx.fillRect(0, 0, 640, 400);
 
-  // 2. Cyber grid background lines
   ctx.strokeStyle = "rgba(255, 255, 255, 0.04)";
   ctx.lineWidth = 1;
   for (let x = 30; x < 610; x += 30) {
@@ -95,44 +115,23 @@ function createHologramCardCanvas(
     ctx.stroke();
   }
 
-  // 3. Glowing neon card border
   ctx.strokeStyle = colorHex;
   ctx.lineWidth = 4;
   ctx.shadowColor = colorHex;
   ctx.shadowBlur = 16;
   ctx.strokeRect(16, 16, 608, 368);
 
-  // 4. Tech corner brackets
   ctx.strokeStyle = "#ffffff";
   ctx.lineWidth = 3;
   ctx.shadowBlur = 8;
   const bLen = 24;
-  // Top-left
   ctx.beginPath();
-  ctx.moveTo(12, 12 + bLen);
-  ctx.lineTo(12, 12);
-  ctx.lineTo(12 + bLen, 12);
-  ctx.stroke();
-  // Top-right
-  ctx.beginPath();
-  ctx.moveTo(628 - bLen, 12);
-  ctx.lineTo(628, 12);
-  ctx.lineTo(628, 12 + bLen);
-  ctx.stroke();
-  // Bottom-left
-  ctx.beginPath();
-  ctx.moveTo(12, 388 - bLen);
-  ctx.lineTo(12, 388);
-  ctx.lineTo(12 + bLen, 388);
-  ctx.stroke();
-  // Bottom-right
-  ctx.beginPath();
-  ctx.moveTo(628 - bLen, 388);
-  ctx.lineTo(628, 388);
-  ctx.lineTo(628, 388 - bLen);
+  ctx.moveTo(12, 12 + bLen); ctx.lineTo(12, 12); ctx.lineTo(12 + bLen, 12);
+  ctx.moveTo(628 - bLen, 12); ctx.lineTo(628, 12); ctx.lineTo(628, 12 + bLen);
+  ctx.moveTo(12, 388 - bLen); ctx.lineTo(12, 388); ctx.lineTo(12 + bLen, 388);
+  ctx.moveTo(628 - bLen, 388); ctx.lineTo(628, 388); ctx.lineTo(628, 388 - bLen);
   ctx.stroke();
 
-  // 5. Header: Station Index Code + Tag Pill
   ctx.shadowBlur = 0;
   ctx.fillStyle = colorHex;
   ctx.font = 'bold 22px "Courier New", monospace';
@@ -146,7 +145,6 @@ function createHologramCardCanvas(
   ctx.textAlign = "center";
   ctx.fillText(tag, 525, 55);
 
-  // 6. Project Title
   ctx.fillStyle = "#ffffff";
   ctx.font = 'bold 36px "Courier New", monospace, sans-serif';
   ctx.textAlign = "left";
@@ -154,13 +152,11 @@ function createHologramCardCanvas(
   ctx.shadowBlur = 16;
   ctx.fillText(title, 36, 120);
 
-  // 7. Subtitle / Architecture Highlight
   ctx.fillStyle = accentHex;
   ctx.font = '600 20px "Courier New", monospace';
   ctx.shadowBlur = 8;
   ctx.fillText(subtitle, 36, 160);
 
-  // 8. Cyber Graphic / Telemetry waveform
   ctx.strokeStyle = colorHex;
   ctx.lineWidth = 2;
   ctx.beginPath();
@@ -171,12 +167,10 @@ function createHologramCardCanvas(
   }
   ctx.stroke();
 
-  // 9. Status Bar & Coordinates
   ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
   ctx.font = '13px "Courier New", monospace';
   ctx.fillText(`SYS_NODE: [READY]   BUFFER: 0x${indexStr}AA   STATUS: ACTIVE`, 36, 335);
 
-  // Progress Bar Line
   ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
   ctx.fillRect(36, 350, 560, 6);
   ctx.fillStyle = colorHex;
@@ -255,7 +249,6 @@ export function createCyberpunkEnvironment(): CyberpunkEnvironment {
   group.add(groundMesh);
   disposables.push(groundGeo, groundMat);
 
-  // Wet reflective puddle lane down center
   const puddleGeo = new THREE.PlaneGeometry(14, 80);
   const puddleMat = new THREE.MeshBasicMaterial({
     color: 0x060b18,
@@ -282,21 +275,18 @@ export function createCyberpunkEnvironment(): CyberpunkEnvironment {
   });
   disposables.push(buildingMat);
 
-  // Left building flank (spans Z = +15 to -60)
   const leftBuildingGeo = new THREE.BoxGeometry(10, 40, 85);
   const leftBuilding = new THREE.Mesh(leftBuildingGeo, buildingMat);
   leftBuilding.position.set(-10, 20, -22);
   group.add(leftBuilding);
   disposables.push(leftBuildingGeo);
 
-  // Right building flank (spans Z = +15 to -60)
   const rightBuildingGeo = new THREE.BoxGeometry(10, 40, 85);
   const rightBuilding = new THREE.Mesh(rightBuildingGeo, buildingMat);
   rightBuilding.position.set(10, 20, -22);
   group.add(rightBuilding);
   disposables.push(rightBuildingGeo);
 
-  // Deep end skyline building
   const backBuildingGeo = new THREE.BoxGeometry(36, 60, 8);
   const backBuildingMat = new THREE.MeshStandardMaterial({
     map: facadeTex,
@@ -320,86 +310,14 @@ export function createCyberpunkEnvironment(): CyberpunkEnvironment {
   const hologramCards: HologramCardInstance[] = [];
 
   const cardConfigs = [
-    {
-      index: "00",
-      title: "RAVI PATEL",
-      subtitle: "GAME DEV & GRAPHICS ENGINEER",
-      tag: "OVERVIEW",
-      color: "#00f0ff",
-      accent: "#38bdf8",
-      pos: new THREE.Vector3(-2.6, 2.8, 3.5),
-      rotY: 0.22,
-    },
-    {
-      index: "01",
-      title: "ARCHITECTURE",
-      subtitle: "UNITY • UNREAL ENGINE 5 • THREE.JS",
-      tag: "EXPERIENCE",
-      color: "#a855f7",
-      accent: "#c084fc",
-      pos: new THREE.Vector3(2.6, 2.9, -1.5),
-      rotY: -0.22,
-    },
-    {
-      index: "02",
-      title: "SMARTSCOPY",
-      subtitle: "REAL-TIME SURGICAL AR ENGINE",
-      tag: "FLAGSHIP",
-      color: "#00f0ff",
-      accent: "#22d3ee",
-      pos: new THREE.Vector3(-2.6, 3.0, -6.5),
-      rotY: 0.22,
-    },
-    {
-      index: "03",
-      title: "MIMADIM PLUS",
-      subtitle: "PARAMETRIC CAD GENERATOR",
-      tag: "ENGINEERING",
-      color: "#ffb700",
-      accent: "#fbbf24",
-      pos: new THREE.Vector3(2.6, 3.1, -11.5),
-      rotY: -0.22,
-    },
-    {
-      index: "04",
-      title: "NO PAIN HEALS",
-      subtitle: "CLINICAL REHAB SENSOR MATRIX",
-      tag: "MED-TECH",
-      color: "#10b981",
-      accent: "#34d399",
-      pos: new THREE.Vector3(-2.6, 3.2, -16.5),
-      rotY: 0.22,
-    },
-    {
-      index: "05",
-      title: "MOTION AI",
-      subtitle: "COMPUTER VISION TELEMETRY",
-      tag: "EDGE AI",
-      color: "#ff007f",
-      accent: "#f43f5e",
-      pos: new THREE.Vector3(2.6, 3.3, -21.5),
-      rotY: -0.22,
-    },
-    {
-      index: "06",
-      title: "CORE SYSTEMS",
-      subtitle: "GLSL • WEBGPU • C++ ARCHITECTURE",
-      tag: "SKILLS",
-      color: "#38bdf8",
-      accent: "#7dd3fc",
-      pos: new THREE.Vector3(-2.6, 3.4, -26.5),
-      rotY: 0.22,
-    },
-    {
-      index: "07",
-      title: "TRANSMISSION",
-      subtitle: "INITIATE DIRECT COMMS LINK",
-      tag: "CONNECT",
-      color: "#ff007f",
-      accent: "#00f0ff",
-      pos: new THREE.Vector3(0.0, 3.6, -31.5),
-      rotY: 0.0,
-    },
+    { index: "00", title: "RAVI PATEL", subtitle: "GAME DEV & GRAPHICS ENGINEER", tag: "OVERVIEW", color: "#00f0ff", accent: "#38bdf8", pos: new THREE.Vector3(-2.6, 2.8, 3.5), rotY: 0.22 },
+    { index: "01", title: "ARCHITECTURE", subtitle: "UNITY • UNREAL ENGINE 5 • THREE.JS", tag: "EXPERIENCE", color: "#a855f7", accent: "#c084fc", pos: new THREE.Vector3(2.6, 2.9, -1.5), rotY: -0.22 },
+    { index: "02", title: "SMARTSCOPY", subtitle: "REAL-TIME SURGICAL AR ENGINE", tag: "FLAGSHIP", color: "#00f0ff", accent: "#22d3ee", pos: new THREE.Vector3(-2.6, 3.0, -6.5), rotY: 0.22 },
+    { index: "03", title: "MIMADIM PLUS", subtitle: "PARAMETRIC CAD GENERATOR", tag: "ENGINEERING", color: "#ffb700", accent: "#fbbf24", pos: new THREE.Vector3(2.6, 3.1, -11.5), rotY: -0.22 },
+    { index: "04", title: "NO PAIN HEALS", subtitle: "CLINICAL REHAB SENSOR MATRIX", tag: "MED-TECH", color: "#10b981", accent: "#34d399", pos: new THREE.Vector3(-2.6, 3.2, -16.5), rotY: 0.22 },
+    { index: "05", title: "MOTION AI", subtitle: "COMPUTER VISION TELEMETRY", tag: "EDGE AI", color: "#ff007f", accent: "#f43f5e", pos: new THREE.Vector3(2.6, 3.3, -21.5), rotY: -0.22 },
+    { index: "06", title: "CORE SYSTEMS", subtitle: "GLSL • WEBGPU • C++ ARCHITECTURE", tag: "SKILLS", color: "#38bdf8", accent: "#7dd3fc", pos: new THREE.Vector3(-2.6, 3.4, -26.5), rotY: 0.22 },
+    { index: "07", title: "TRANSMISSION", subtitle: "INITIATE DIRECT COMMS LINK", tag: "CONNECT", color: "#ff007f", accent: "#00f0ff", pos: new THREE.Vector3(0.0, 3.6, -31.5), rotY: 0.0 },
   ];
 
   cardConfigs.forEach((cfg, idx) => {
@@ -407,29 +325,15 @@ export function createCyberpunkEnvironment(): CyberpunkEnvironment {
     cardGroup.position.copy(cfg.pos);
     cardGroup.rotation.y = cfg.rotY;
 
-    const cardTex = createHologramCardCanvas(
-      cfg.index,
-      cfg.title,
-      cfg.subtitle,
-      cfg.tag,
-      cfg.color,
-      cfg.accent
-    );
+    const cardTex = createHologramCardCanvas(cfg.index, cfg.title, cfg.subtitle, cfg.tag, cfg.color, cfg.accent);
     disposables.push(cardTex);
 
-    // Front display face
     const faceGeo = new THREE.PlaneGeometry(3.2, 2.0);
-    const faceMat = new THREE.MeshBasicMaterial({
-      map: cardTex,
-      transparent: true,
-      opacity: 0.94,
-      toneMapped: false,
-    });
+    const faceMat = new THREE.MeshBasicMaterial({ map: cardTex, transparent: true, opacity: 0.94, toneMapped: false });
     const faceMesh = new THREE.Mesh(faceGeo, faceMat);
     cardGroup.add(faceMesh);
     disposables.push(faceGeo, faceMat);
 
-    // Tinted dark glass backing
     const glassGeo = new THREE.BoxGeometry(3.22, 2.02, 0.08);
     const glassMat = new THREE.MeshStandardMaterial({
       color: 0x04060e,
@@ -443,12 +347,8 @@ export function createCyberpunkEnvironment(): CyberpunkEnvironment {
     cardGroup.add(glassMesh);
     disposables.push(glassGeo, glassMat);
 
-    // Outer neon glowing wireframe edge
     const wireGeo = new THREE.EdgesGeometry(glassGeo);
-    const wireMat = new THREE.LineBasicMaterial({
-      color: new THREE.Color(cfg.color),
-      linewidth: 2,
-    });
+    const wireMat = new THREE.LineBasicMaterial({ color: new THREE.Color(cfg.color), linewidth: 2 });
     const wireMesh = new THREE.LineSegments(wireGeo, wireMat);
     wireMesh.position.z = -0.05;
     cardGroup.add(wireMesh);
@@ -465,7 +365,7 @@ export function createCyberpunkEnvironment(): CyberpunkEnvironment {
   });
 
   // ==========================================
-  // 4. VIBRANT WALL NEON SIGNS (Background Depth)
+  // 4. VIBRANT WALL NEON SIGNS
   // ==========================================
   interface NeonSignInstance {
     mesh: THREE.Mesh;
@@ -518,9 +418,9 @@ export function createCyberpunkEnvironment(): CyberpunkEnvironment {
   });
 
   // ==========================================
-  // 6. EXTENDED SLANTED CYBER RAIN (Full Alley Depth)
+  // 6. EXTENDED SLANTED CYBER RAIN
   // ==========================================
-  const RAIN_COUNT = 1200;
+  const RAIN_COUNT = 1000;
   const rainGeo = new THREE.BufferGeometry();
   const rainPositions = new Float32Array(RAIN_COUNT * 6);
 
@@ -550,83 +450,199 @@ export function createCyberpunkEnvironment(): CyberpunkEnvironment {
   group.add(rainLines);
   disposables.push(rainGeo, rainMat);
 
-  // ==========================================
-  // 7. FLOATING NEON MIST
-  // ==========================================
-  const MIST_COUNT = 200;
-  const mistGeo = new THREE.BufferGeometry();
-  const mistPos = new Float32Array(MIST_COUNT * 3);
-  const mistColors = new Float32Array(MIST_COUNT * 3);
+  // =========================================================================
+  // 7. VERTEX3D EXACT 3D INTERACTIVE PARTICLE FORCE FIELD (`LogoBubbles.js`)
+  // =========================================================================
+  const BUBBLE_COUNT = 1800;
+  const bubbleSpriteTex = createBubbleSpriteTexture();
+  disposables.push(bubbleSpriteTex);
 
-  for (let i = 0; i < MIST_COUNT; i++) {
-    mistPos[i * 3 + 0] = (Math.random() - 0.5) * 11;
-    mistPos[i * 3 + 1] = 0.5 + Math.random() * 14;
-    mistPos[i * 3 + 2] = (Math.random() - 0.5) * 60 - 15;
+  const bubbleGeo = new THREE.BufferGeometry();
+  const basePos = new Float32Array(BUBBLE_COUNT * 3);
+  const curPos = new Float32Array(BUBBLE_COUNT * 3);
+  const velocities = new Float32Array(BUBBLE_COUNT * 3);
+  const bubbleColors = new Float32Array(BUBBLE_COUNT * 3);
 
-    if (i % 2 === 0) {
-      mistColors[i * 3 + 0] = 1.0;
-      mistColors[i * 3 + 1] = 0.0;
-      mistColors[i * 3 + 2] = 0.5;
+  for (let i = 0; i < BUBBLE_COUNT; i++) {
+    // Distribute throughout the 3D street corridor around cards
+    const x = (Math.random() - 0.5) * 9.0;
+    const y = 0.8 + Math.random() * 6.5;
+    const z = 7.0 - Math.random() * 42.0; // spans Z = +7 to -35
+
+    basePos[i * 3 + 0] = x;
+    basePos[i * 3 + 1] = y;
+    basePos[i * 3 + 2] = z;
+
+    curPos[i * 3 + 0] = x;
+    curPos[i * 3 + 1] = y;
+    curPos[i * 3 + 2] = z;
+
+    velocities[i * 3 + 0] = 0;
+    velocities[i * 3 + 1] = 0;
+    velocities[i * 3 + 2] = 0;
+
+    // Glowing Cyber Palette (Cyan, Hot Pink, Amber Gold)
+    const randColor = Math.random();
+    if (randColor > 0.55) {
+      // Electric Cyan
+      bubbleColors[i * 3 + 0] = 0.0;
+      bubbleColors[i * 3 + 1] = 0.95;
+      bubbleColors[i * 3 + 2] = 1.0;
+    } else if (randColor > 0.22) {
+      // Hot Magenta / Pink
+      bubbleColors[i * 3 + 0] = 1.0;
+      bubbleColors[i * 3 + 1] = 0.05;
+      bubbleColors[i * 3 + 2] = 0.65;
     } else {
-      mistColors[i * 3 + 0] = 0.0;
-      mistColors[i * 3 + 1] = 0.95;
-      mistColors[i * 3 + 2] = 1.0;
+      // Neon Gold / Amber
+      bubbleColors[i * 3 + 0] = 1.0;
+      bubbleColors[i * 3 + 1] = 0.72;
+      bubbleColors[i * 3 + 2] = 0.0;
     }
   }
-  mistGeo.setAttribute("position", new THREE.BufferAttribute(mistPos, 3));
-  mistGeo.setAttribute("color", new THREE.BufferAttribute(mistColors, 3));
 
-  const mistMat = new THREE.PointsMaterial({
-    size: 0.18,
+  bubbleGeo.setAttribute("position", new THREE.BufferAttribute(curPos, 3));
+  bubbleGeo.setAttribute("color", new THREE.BufferAttribute(bubbleColors, 3));
+
+  const bubbleMat = new THREE.PointsMaterial({
+    size: 0.22,
+    map: bubbleSpriteTex,
     vertexColors: true,
     transparent: true,
-    opacity: 0.65,
+    opacity: 0.88,
     blending: THREE.AdditiveBlending,
+    depthWrite: false,
   });
-  const mistPoints = new THREE.Points(mistGeo, mistMat);
-  group.add(mistPoints);
-  disposables.push(mistGeo, mistMat);
+  const bubblePoints = new THREE.Points(bubbleGeo, bubbleMat);
+  group.add(bubblePoints);
+  disposables.push(bubbleGeo, bubbleMat);
+
+  // 3D Mouse Raycast State
+  const target3DMouse = new THREE.Vector3(0, 3, 0);
+  const smooth3DMouse = new THREE.Vector3(0, 3, 0);
+  const raycaster = new THREE.Raycaster();
+  const screenVec = new THREE.Vector2(0, 0);
+  const planeTarget = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0); // Intersection plane
 
   // ==========================================
-  // UPDATE LOOP
+  // UPDATE LOOP (Particle Physics & Scene Motion)
   // ==========================================
-  const update = (delta: number, elapsed: number, mouseNormX: number, mouseNormY: number) => {
-    // 1. Subtle alley sway with mouse
-    group.rotation.y = mouseNormX * 0.035;
-    group.rotation.x = -mouseNormY * 0.018;
+  const update = (
+    delta: number,
+    elapsed: number,
+    mouseNormX: number,
+    mouseNormY: number,
+    camera?: THREE.PerspectiveCamera
+  ) => {
+    // 1. Raycast mouse into 3D world space (Vertex3D ScreenToWorld logic)
+    if (camera) {
+      screenVec.set(mouseNormX, mouseNormY);
+      raycaster.setFromCamera(screenVec, camera);
 
-    // 2. Levitation bobbing on 3D holographic cards
+      // Intersect ray with plane at active card depth (~ camera.position.z - 5)
+      planeTarget.constant = -(camera.position.z - 5.5);
+      const intersection = new THREE.Vector3();
+      if (raycaster.ray.intersectPlane(planeTarget, intersection)) {
+        target3DMouse.copy(intersection);
+      }
+    }
+
+    // Smooth 3D mouse tracking with inertia (Vertex3D 0.18 ease)
+    smooth3DMouse.lerp(target3DMouse, 0.18);
+
+    // 2. Vertex3D Force-Field Repulsion & Elastic Spring Physics (`LogoBubbles.js`)
+    const posAttr = bubbleGeo.attributes.position as THREE.BufferAttribute;
+    const positions = posAttr.array as Float32Array;
+
+    const INTERACTION_RADIUS = 3.2;
+    const RADIUS_SQ = INTERACTION_RADIUS * INTERACTION_RADIUS;
+    const PUSH_SPEED = 18.0 * delta;
+    const RETURN_SPEED = 4.5 * delta;
+    const DAMPING = 0.86;
+
+    const mX = smooth3DMouse.x;
+    const mY = smooth3DMouse.y;
+    const mZ = smooth3DMouse.z;
+
+    for (let i = 0; i < BUBBLE_COUNT; i++) {
+      const idx = i * 3;
+      const bX = basePos[idx + 0];
+      const bY = basePos[idx + 1];
+      const bZ = basePos[idx + 2];
+
+      let cX = positions[idx + 0];
+      let cY = positions[idx + 1];
+      let cZ = positions[idx + 2];
+
+      let vX = velocities[idx + 0];
+      let vY = velocities[idx + 1];
+      let vZ = velocities[idx + 2];
+
+      // Distance from smoothed 3D cursor to particle
+      const dX = cX - mX;
+      const dY = cY - mY;
+      const dZ = cZ - mZ;
+      const distSq = dX * dX + dY * dY + dZ * dZ;
+
+      // Physical 3D Repulsion Force
+      if (distSq < RADIUS_SQ) {
+        const dist = Math.sqrt(distSq) || 0.001;
+        const force = (1.0 - dist / INTERACTION_RADIUS) * PUSH_SPEED;
+        vX += (dX / dist) * force;
+        vY += (dY / dist) * force;
+        vZ += (dZ / dist) * force;
+      }
+
+      // Elastic Spring Return to Base Position
+      vX += (bX - cX) * RETURN_SPEED;
+      vY += (bY - cY) * RETURN_SPEED;
+      vZ += (bZ - cZ) * RETURN_SPEED;
+
+      // Friction / Inertial Damping
+      vX *= DAMPING;
+      vY *= DAMPING;
+      vZ *= DAMPING;
+
+      // Subtle ambient harmonic float
+      const ambientFloat = Math.sin(elapsed * 1.8 + i * 0.3) * 0.0015;
+
+      cX += vX + ambientFloat;
+      cY += vY + ambientFloat;
+      cZ += vZ;
+
+      positions[idx + 0] = cX;
+      positions[idx + 1] = cY;
+      positions[idx + 2] = cZ;
+
+      velocities[idx + 0] = vX;
+      velocities[idx + 1] = vY;
+      velocities[idx + 2] = vZ;
+    }
+    posAttr.needsUpdate = true;
+
+    // 3. Levitation bobbing on 3D holographic cards
     hologramCards.forEach((card) => {
       card.group.position.y =
         card.initialY + Math.sin(elapsed * card.bobSpeed + card.bobOffset) * 0.07;
     });
 
-    // 3. Falling cyber rain
-    const posAttr = rainGeo.attributes.position as THREE.BufferAttribute;
-    const positions = posAttr.array as Float32Array;
+    // 4. Falling cyber rain
+    const rainPosAttr = rainGeo.attributes.position as THREE.BufferAttribute;
+    const rPositions = rainPosAttr.array as Float32Array;
     const rainSpeed = 26.0 * delta;
 
     for (let i = 0; i < RAIN_COUNT; i++) {
-      positions[i * 6 + 1] -= rainSpeed;
-      positions[i * 6 + 4] -= rainSpeed;
+      rPositions[i * 6 + 1] -= rainSpeed;
+      rPositions[i * 6 + 4] -= rainSpeed;
 
-      if (positions[i * 6 + 1] < 0) {
+      if (rPositions[i * 6 + 1] < 0) {
         const resetY = 20 + Math.random() * 4;
         const len = 0.5 + Math.random() * 0.45;
-        positions[i * 6 + 1] = resetY;
-        positions[i * 6 + 4] = resetY - len;
+        rPositions[i * 6 + 1] = resetY;
+        rPositions[i * 6 + 4] = resetY - len;
       }
     }
-    posAttr.needsUpdate = true;
-
-    // 4. Mist drift
-    const mistPosAttr = mistGeo.attributes.position as THREE.BufferAttribute;
-    const mPositions = mistPosAttr.array as Float32Array;
-    for (let i = 0; i < MIST_COUNT; i++) {
-      mPositions[i * 3 + 1] += Math.sin(elapsed * 1.5 + i) * 0.003;
-      mPositions[i * 3 + 0] += Math.cos(elapsed * 0.8 + i) * 0.002;
-    }
-    mistPosAttr.needsUpdate = true;
+    rainPosAttr.needsUpdate = true;
 
     // 5. Intermittent neon sign flicker
     neonSigns.forEach((sign) => {

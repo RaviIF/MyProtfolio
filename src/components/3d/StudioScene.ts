@@ -205,9 +205,9 @@ export class StudioScene {
       // Update camera along scroll spline + mouse parallax
       this.cameraController.update(this.scrollProgress, delta);
 
-      // Update Neo-Brutalist Metropolis Environment (god rays, motes, and blueprints)
+      // Update Cyberpunk Environment (3D interactive particle force field, motes, and neon flicker)
       if (this.environment) {
-        this.environment.update(delta, elapsedTime, this.mouseNormX, this.mouseNormY);
+        this.environment.update(delta, elapsedTime, this.mouseNormX, this.mouseNormY, this.camera);
       }
 
       // Update fluid ripple simulation, grain, and chromatic aberration
