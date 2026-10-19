@@ -4,7 +4,7 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { CinematicPostPass } from "./CinematicPostPass";
 import { StudioSceneOptions } from "./types";
-import { createMetropolisEnvironment, MetropolisEnvironment } from "./MetropolisObjects";
+import { createCyberpunkEnvironment, CyberpunkEnvironment } from "./CyberpunkObjects";
 import { CameraController } from "./CameraController";
 
 export class StudioScene {
@@ -16,7 +16,7 @@ export class StudioScene {
   private composer: EffectComposer | null = null;
   private bloomPass: UnrealBloomPass | null = null;
   private cinematicPass: CinematicPostPass | null = null;
-  private environment: MetropolisEnvironment | null = null;
+  private environment: CyberpunkEnvironment | null = null;
 
   public activeStationId = "home";
   private cursorU = 0.5;
@@ -36,10 +36,10 @@ export class StudioScene {
 
   constructor() {
     this.scene = new THREE.Scene();
-    this.scene.fog = new THREE.FogExp2(0x060812, 0.038);
+    this.scene.fog = new THREE.FogExp2(0x04060d, 0.035);
 
     this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    this.camera.position.set(0.0, 14.0, 18.0);
+    this.camera.position.set(0.0, 3.2, 8.5);
 
     this.cameraController = new CameraController(this.camera);
     this.clock = new THREE.Clock();
@@ -66,7 +66,7 @@ export class StudioScene {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.75);
       this.renderer.setPixelRatio(dpr);
       this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      this.renderer.toneMappingExposure = 1.15;
+      this.renderer.toneMappingExposure = 1.2;
       this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 
       // Ensure canvas fills container
@@ -83,14 +83,14 @@ export class StudioScene {
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
 
-      // 3. Lighting Rig (Hybrid Twilight)
+      // 3. Lighting Rig (Cyberpunk Neon Alley)
       this.setupLighting();
 
-      // 4. Procedural Neo-Brutalist Metropolis Environment
-      this.environment = createMetropolisEnvironment();
+      // 4. Procedural Cyberpunk Neon Environment (Samsy style)
+      this.environment = createCyberpunkEnvironment();
       this.scene.add(this.environment.group);
 
-      // 5. Post-processing Bloom & Cinematic Lens
+      // 5. Post-processing Bloom & Cinematic Fluid Pass
       this.setupPostProcessing(width, height);
 
       // 6. Notify loaded
@@ -111,24 +111,29 @@ export class StudioScene {
   }
 
   private setupLighting(): void {
-    // 1. Twilight Ambient Fill
-    const ambientLight = new THREE.AmbientLight(0x0b1120, 1.1);
+    // 1. Dark Cyber Indigo Ambient Fill
+    const ambientLight = new THREE.AmbientLight(0x070b18, 0.85);
     this.scene.add(ambientLight);
 
-    // 2. Key Sun Light (Warm 3500K Golden Sunbeam Source)
-    const sunLight = new THREE.DirectionalLight(0xf59e0b, 2.2);
-    sunLight.position.set(8, 16, 10);
-    this.scene.add(sunLight);
+    // 2. Magenta Neon Key Light (Left Building Face)
+    const magentaLight = new THREE.PointLight(0xff007f, 2.6, 25);
+    magentaLight.position.set(-4.5, 4.5, 0.0);
+    this.scene.add(magentaLight);
 
-    // 3. Cyan Rim Accent Light (Metropolis Blueprint Edges)
-    const cyanRim = new THREE.DirectionalLight(0x22d3ee, 1.8);
-    cyanRim.position.set(-6, 8, -4);
-    this.scene.add(cyanRim);
+    // 3. Cyan Neon Key Light (Right Building Face)
+    const cyanLight = new THREE.PointLight(0x00f0ff, 2.8, 25);
+    cyanLight.position.set(4.5, 5.0, -4.0);
+    this.scene.add(cyanLight);
 
-    // 4. Amber Ground Bounce Accent
-    const amberAccent = new THREE.PointLight(0xfbbf24, 1.4, 25);
-    amberAccent.position.set(6, 4, -8);
-    this.scene.add(amberAccent);
+    // 4. Amber Ground Bounce
+    const amberLight = new THREE.PointLight(0xffb700, 1.6, 20);
+    amberLight.position.set(0.0, 1.0, 2.0);
+    this.scene.add(amberLight);
+
+    // 5. Deep Violet Backlight
+    const violetLight = new THREE.PointLight(0x7c3aed, 2.2, 35);
+    violetLight.position.set(0.0, 7.0, -25.0);
+    this.scene.add(violetLight);
   }
 
   private setupPostProcessing(width: number, height: number): void {
@@ -139,12 +144,12 @@ export class StudioScene {
       const renderPass = new RenderPass(this.scene, this.camera);
       this.composer.addPass(renderPass);
 
-      // 1. UnrealBloomPass for emissive monitors & holograms
+      // 1. UnrealBloomPass for glowing neon signs and street reflections
       this.bloomPass = new UnrealBloomPass(
         new THREE.Vector2(width, height),
-        0.5,   // strength
-        0.35,  // radius
-        0.75   // threshold
+        0.75,  // strength
+        0.42,  // radius
+        0.70   // threshold
       );
       this.composer.addPass(this.bloomPass);
 
