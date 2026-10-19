@@ -35,25 +35,25 @@
   export function createMetropolisEnvironment(): MetropolisEnvironment;
   ```
 
-- [ ] **Step 1: Create `MetropolisObjects.ts` with Colossal Brutalist Monoliths**
+- [x] **Step 1: Create `MetropolisObjects.ts` with Colossal Brutalist Monoliths**
   Generate towering beveled concrete towers, angular pillars, cantilevered sky bridges, and architectural courtyards using dark charcoal matte materials with ambient occlusion.
 
-- [ ] **Step 2: Implement Volumetric God Rays (Light Shafts)**
+- [x] **Step 2: Implement Volumetric God Rays (Light Shafts)**
   Create diagonal volumetric sunbeam geometry with a custom additive blending shader blending warm golden light (`#f59e0b` / `#fbbf24`) with soft exponential edge falloff and depth fading.
 
-- [ ] **Step 3: Implement Reflective Wet Obsidian Ground Plane**
+- [x] **Step 3: Implement Reflective Wet Obsidian Ground Plane**
   Construct a reflective dark stone floor plane reflecting the overhead sunbeams and monolithic pillars.
 
-- [ ] **Step 4: Implement Cyan CAD Blueprint Insets**
+- [x] **Step 4: Implement Cyan CAD Blueprint Insets**
   Etch precision glowing cyan (`#22d3ee`) coordinate grids and architectural vector lines into stone faces.
 
-- [ ] **Step 5: Implement 500 Atmospheric Gold & Cyan Dust Motes**
+- [x] **Step 5: Implement 500 Atmospheric Gold & Cyan Dust Motes**
   Generate 500 floating particles that drift through the golden sunbeams with Brownian turbulence and continuous vertical fall wrap-around.
 
-- [ ] **Step 6: Verify build**
+- [x] **Step 6: Verify build**
   Run `npx tsc --noEmit` to ensure zero compilation errors.
 
-- [ ] **Step 7: Commit Task 1**
+- [x] **Step 7: Commit Task 1**
   `git add src/components/3d/MetropolisObjects.ts ; git commit -m "feat(3d): implement procedural Neo-Brutalist Cyber-Metropolis 3D environment"`
 
 ---
@@ -67,7 +67,7 @@
 **Interfaces:**
 - Updates `CAMERA_WAYPOINTS` array to match the 8 brutalist architectural stations.
 
-- [ ] **Step 1: Update `CameraController.ts` with 8 Metropolis Waypoints**
+- [x] **Step 1: Update `CameraController.ts` with 8 Metropolis Waypoints**
   Update coordinates and targets for all 8 stations:
   - 00 `home`: High-altitude canyon `(0.0, 14.0, 18.0)` -> `(0.0, 4.0, 0.0)`
   - 01 `about`: Monumental light hall `(3.5, 7.5, 10.0)` -> `(-1.0, 2.5, 0.0)`
@@ -78,10 +78,10 @@
   - 06 `skills`: Monumental archway `(-1.0, 6.0, -12.0)` -> `(0.0, 3.5, -16.0)`
   - 07 `contact`: Horizon observation deck `(0.0, 12.0, -16.0)` -> `(0.0, 14.0, -32.0)`
 
-- [ ] **Step 2: Verify build**
+- [x] **Step 2: Verify build**
   Run `npx tsc --noEmit` and confirm 0 errors.
 
-- [ ] **Step 3: Commit Task 2**
+- [x] **Step 3: Commit Task 2**
   `git add src/components/3d/CameraController.ts ; git commit -m "feat(3d): configure 8-station fly-through spline waypoints for metropolis"`
 
 ---
@@ -96,23 +96,23 @@
 **Interfaces:**
 - Consumes: `createMetropolisEnvironment` from `MetropolisObjects.ts`
 
-- [ ] **Step 1: Update StudioScene Lighting Rig for Hybrid Twilight**
+- [x] **Step 1: Update StudioScene Lighting Rig for Hybrid Twilight**
   - Key Sun Light: Directional light at `(8, 16, 10)` with warm golden color (`0xf59e0b`, intensity 2.2).
   - Ambient Twilight: Deep navy blue ambient fill (`0x0b1120`, intensity 1.1).
   - Rim Lights: Cyan edge accent (`0x22d3ee`, intensity 1.8) and warm amber accent (`0xfbbf24`, intensity 1.4).
   - Scene Fog: Deep twilight navy exponential fog (`new THREE.FogExp2(0x060812, 0.038)`).
 
-- [ ] **Step 2: Replace Old Environment & HologramStages with MetropolisEnvironment**
+- [x] **Step 2: Replace Old Environment & HologramStages with MetropolisEnvironment**
   Instantiate `createMetropolisEnvironment()` and update in render loop with delta, elapsed, and mouse coordinates.
   Clean up obsolete `hologramStages` references.
 
-- [ ] **Step 3: Update `StudioCanvas.tsx` Props**
+- [x] **Step 3: Update `StudioCanvas.tsx` Props**
   Remove `viewportMode` from `StudioCanvasProps` and simplify props to `isEnabled` and `activeStationId`.
 
-- [ ] **Step 4: Verify build**
+- [x] **Step 4: Verify build**
   Run `npm run build` to confirm clean compilation.
 
-- [ ] **Step 5: Commit Task 3**
+- [x] **Step 5: Commit Task 3**
   `git add src/components/3d/ ; git commit -m "feat(3d): integrate metropolis environment and hybrid twilight lighting into StudioScene"`
 
 ---
@@ -126,22 +126,22 @@
 - Delete: `src/components/3d/StudioObjects.ts`
 - Test: `npm run build` & browser preview
 
-- [ ] **Step 1: Clean up `Index.tsx`**
+- [x] **Step 1: Clean up `Index.tsx`**
   Remove `ShaderViewportHUD` import and JSX render.
   Remove `viewportMode` state and `localStorage` persistence.
 
-- [ ] **Step 2: Remove Obsolete Files**
+- [x] **Step 2: Remove Obsolete Files**
   Remove `ShaderViewportHUD.tsx`, `HologramStages.ts`, and old `StudioObjects.ts`.
 
-- [ ] **Step 3: Run Full Production Build**
+- [x] **Step 3: Run Full Production Build**
   Run `npm run build` to verify clean bundling with zero warnings.
 
-- [ ] **Step 4: Manual Verification in Browser**
+- [x] **Step 4: Manual Verification in Browser**
   Verify at `http://localhost:8088/MyProtfolio/`:
   1. The background displays colossal brutalist concrete monoliths with dramatic diagonal golden sunbeams.
   2. Scrolling smoothly flies the camera through the metropolis canyons across all 8 slides.
   3. Cursor movement shifts perspective and the angle of the sunbeams, while fluid ripples smear across the light beams.
   4. No debug HUD buttons exist—the UI is clean and distraction-free.
 
-- [ ] **Step 5: Commit Task 4**
+- [x] **Step 5: Commit Task 4**
   `git add -A ; git commit -m "feat: complete master assembly of Neo-Brutalist Cyber-Metropolis background"`
