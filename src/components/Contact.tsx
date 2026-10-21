@@ -84,16 +84,10 @@ const Contact = () => {
       link: "https://linkedin.com/in/ravi-patel-011839265"
     },
     {
-      icon: Github,
-      label: "GitHub",
-      value: "github.com/raviif",
-      link: "https://github.com/raviif"
-    },
-    {
       icon: MapPin,
       label: "Location",
-      value: "Karamsad, Anand, Gujarat, India",
-      link: "https://maps.google.com/?q=Karamsad,Anand,Gujarat"
+      value: "Anand, Gujarat, India",
+      link: "https://maps.google.com/?q=Anand,Gujarat"
     }
   ];
 
