@@ -17,15 +17,19 @@ export const SlideContact: React.FC = () => {
     setIsSubmitting(true);
 
     try {
+      const templateParams = {
+        to_name: formData.name,
+        from_name: formData.name,
+        from_email: formData.email,
+        to_email: formData.email,
+        message: formData.message,
+      };
+
       await emailjs.send(
-        "service_7vljb2h",
-        "template_k3j7nfe",
-        {
-          from_name: formData.name,
-          reply_to: formData.email,
-          message: formData.message,
-        },
-        "GekL2x0c-5PjX33sM"
+        "service_9g0u4yf",
+        "template_xoptwyz",
+        templateParams,
+        "kw9uQYqcvZDSGm55g"
       );
 
       setIsSent(true);
@@ -81,10 +85,10 @@ export const SlideContact: React.FC = () => {
                   Email Address
                 </span>
                 <a
-                  href="mailto:patelravi28042001@gmail.com"
+                  href="mailto:rp.ravipatel90@gmail.com"
                   className="text-xs md:text-sm font-semibold text-white hover:text-cyan-400 transition-colors font-mono"
                 >
-                  patelravi28042001@gmail.com
+                  rp.ravipatel90@gmail.com
                 </a>
               </div>
             </div>
@@ -98,10 +102,10 @@ export const SlideContact: React.FC = () => {
                   Phone / WhatsApp
                 </span>
                 <a
-                  href="tel:+919712728974"
+                  href="tel:+917698512692"
                   className="text-xs md:text-sm font-semibold text-white hover:text-cyan-400 transition-colors font-mono"
                 >
-                  +91 97127 28974
+                  +91 76985 12692
                 </a>
               </div>
             </div>
@@ -123,7 +127,7 @@ export const SlideContact: React.FC = () => {
             {/* Social Links */}
             <div className="pt-2 flex gap-3">
               <a
-                href="https://github.com/RaviPatel2804"
+                href="https://github.com/raviif"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 p-3 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-cyan-400/40 text-slate-300 hover:text-cyan-400 transition-all flex items-center justify-center gap-2 text-xs font-mono"
@@ -132,7 +136,7 @@ export const SlideContact: React.FC = () => {
                 <span>GitHub</span>
               </a>
               <a
-                href="https://www.linkedin.com/in/ravi-patel-394939223/"
+                href="https://linkedin.com/in/ravi-patel-011839265"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 p-3 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-indigo-400/40 text-slate-300 hover:text-indigo-400 transition-all flex items-center justify-center gap-2 text-xs font-mono"
