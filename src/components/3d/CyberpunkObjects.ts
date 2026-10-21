@@ -41,7 +41,10 @@ function createNeonCanvas(
   ctx.strokeRect(22, 22, width - 44, height - 44);
 
   ctx.fillStyle = "#ffffff";
-  ctx.font = `bold ${Math.floor(height * 0.28)}px "Courier New", monospace, sans-serif`;
+  const baseFontSize = Math.floor(height * 0.26);
+  const scale = title.length > 7 ? 7.5 / title.length : 1.0;
+  const fontSize = Math.floor(baseFontSize * Math.max(0.65, scale));
+  ctx.font = `bold ${fontSize}px "Courier New", monospace, sans-serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.shadowColor = colorHex;
@@ -50,7 +53,8 @@ function createNeonCanvas(
 
   if (subtitle) {
     ctx.fillStyle = colorHex;
-    ctx.font = `600 ${Math.floor(height * 0.14)}px monospace, sans-serif`;
+    const subFontSize = Math.min(Math.floor(height * 0.13), Math.floor((width - 48) / Math.max(1, subtitle.length * 0.7)));
+    ctx.font = `600 ${subFontSize}px monospace, sans-serif`;
     ctx.shadowBlur = 14;
     ctx.fillText(subtitle, width / 2, height * 0.74);
   }
@@ -354,12 +358,12 @@ export function createCyberpunkEnvironment(): CyberpunkEnvironment {
   const neonSigns: NeonSignInstance[] = [];
 
   const wallSigns = [
-    { title: "ネオ東京", sub: "SYS-01", color: "#ff007f", glow: "#9b0050", pos: new THREE.Vector3(-4.8, 7.5, 0.0), rot: Math.PI / 2, flicker: 11 },
-    { title: "SHINJUKU", sub: "ARCADE", color: "#ffb700", glow: "#b45309", pos: new THREE.Vector3(4.8, 6.5, -4.0), rot: -Math.PI / 2, flicker: 0 },
-    { title: "MATRIX", sub: "GRAPHICS", color: "#10b981", glow: "#065f46", pos: new THREE.Vector3(-4.8, 5.8, -14.0), rot: Math.PI / 2, flicker: 0 },
-    { title: "CYBER CITY", sub: "WEBGPU", color: "#ff007f", glow: "#be185d", pos: new THREE.Vector3(4.8, 8.2, -19.0), rot: -Math.PI / 2, flicker: 9 },
-    { title: "SMSY-GEN", sub: "CREATIVE", color: "#00f0ff", glow: "#0284c7", pos: new THREE.Vector3(-4.8, 6.2, -25.0), rot: Math.PI / 2, flicker: 0 },
-    { title: "OVERCLOCK", sub: "REALTIME", color: "#ffb700", glow: "#b45309", pos: new THREE.Vector3(4.8, 7.5, -30.0), rot: -Math.PI / 2, flicker: 14 },
+    { title: "CLAUDE", sub: "SONNET 3.5", color: "#f59e0b", glow: "#b45309", pos: new THREE.Vector3(-4.8, 5.5, 2.0), rot: Math.PI / 2, flicker: 0 },
+    { title: "CHATGPT", sub: "GPT-4o", color: "#10b981", glow: "#047857", pos: new THREE.Vector3(4.8, 5.6, -3.5), rot: -Math.PI / 2, flicker: 0 },
+    { title: "GEMINI", sub: "1.5 PRO", color: "#38bdf8", glow: "#0284c7", pos: new THREE.Vector3(-4.8, 5.6, -10.0), rot: Math.PI / 2, flicker: 0 },
+    { title: "ANTIGRAVITY", sub: "AGENTIC AI", color: "#a855f7", glow: "#6b21a8", pos: new THREE.Vector3(4.8, 5.7, -16.5), rot: -Math.PI / 2, flicker: 8 },
+    { title: "CURSOR", sub: "PAIR CODING", color: "#ec4899", glow: "#9d174d", pos: new THREE.Vector3(-4.8, 5.8, -23.0), rot: Math.PI / 2, flicker: 0 },
+    { title: "MIDJOURNEY", sub: "GEN-VFX & 3D", color: "#00f0ff", glow: "#0e7490", pos: new THREE.Vector3(4.8, 5.8, -28.5), rot: -Math.PI / 2, flicker: 11 },
   ];
 
   wallSigns.forEach((cfg) => {
