@@ -119,7 +119,7 @@ export const SlideContact: React.FC = () => {
                   Location
                 </span>
                 <span className="text-xs md:text-sm font-semibold text-white font-mono">
-                  Karamsad, Anand, Gujarat, India
+                  Anand, Gujarat, India
                 </span>
               </div>
             </div>
