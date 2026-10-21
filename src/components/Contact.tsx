@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, Mail, Linkedin, Send, Loader2 } from "lucide-react";
+import { Phone, Mail, Linkedin, Send, Loader2, MapPin, Github } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import emailjs from '@emailjs/browser';
@@ -35,29 +35,15 @@ const Contact = () => {
         to_name: formData.name,
         from_name: formData.name,
         from_email: formData.email,
-          to_email: formData.email,
-          message: formData.message,
+        to_email: formData.email,
+        message: formData.message,
       };
-       // 1️⃣ Send message to you
-      // await emailjs.send(
-      //   'service_4tcy277',
-      //   'template_w51obvo',
-      //   templateParams,
-      //   'kw9uQYqcvZDSGm55g'
-      // );
-      // 2️⃣ Send auto-reply to user
+      // Send auto-reply to user
       await emailjs.send(
-        "service_9g0u4yf",          // same service ID
+        "service_9g0u4yf",
         "template_xoptwyz", 
-         templateParams2,// your new auto-reply template ID
-        // {
-        //   to_name: formData.name,
-        //   to_email: formData.email,
-        //   message: formData.message,
-        //   to_name: "Ravi Patel",
-        //   from_name: "Ravi Patel", // your name
-        // },
-        "kw9uQYqcvZDSGm55g"        // your public key
+        templateParams2,
+        "kw9uQYqcvZDSGm55g"
       );
       
       toast({
@@ -80,61 +66,74 @@ const Contact = () => {
 
   const contactInfo = [
     {
-      icon: Phone,
-      label: "Phone",
-      value: "+91 7698512692",
-      link: "tel:+917698512692"
-    },
-    {
       icon: Mail,
       label: "Email",
       value: "rp.ravipatel90@gmail.com",
       link: "mailto:rp.ravipatel90@gmail.com"
     },
     {
+      icon: Phone,
+      label: "Phone",
+      value: "+91 76985 12692",
+      link: "tel:+917698512692"
+    },
+    {
       icon: Linkedin,
       label: "LinkedIn",
-      value: "Connect on LinkedIn",
+      value: "linkedin.com/in/ravi-patel-011839265",
       link: "https://linkedin.com/in/ravi-patel-011839265"
+    },
+    {
+      icon: Github,
+      label: "GitHub",
+      value: "github.com/raviif",
+      link: "https://github.com/raviif"
+    },
+    {
+      icon: MapPin,
+      label: "Location",
+      value: "Karamsad, Anand, Gujarat, India",
+      link: "https://maps.google.com/?q=Karamsad,Anand,Gujarat"
     }
   ];
 
   return (
-    <section id="contact" className="py-20 bg-navy-dark/30">
+    <section id="contact" className="py-28 relative">
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-center">
-            Let's <span className="gradient-text">Connect</span>
-          </h2>
-          <div className="w-20 h-1 bg-primary mx-auto mb-12" />
+          {/* Section Header */}
+          <div className="text-center mb-14">
+            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
+              Let's <span className="gradient-text">Connect</span>
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-indigo-500 mx-auto mb-6 rounded-full" />
+            <p className="text-zinc-400 text-base md:text-lg max-w-2xl mx-auto">
+              I am open to discuss high-impact software engineering roles, XR spatial computing architectures, or specialized contract systems.
+            </p>
+          </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Contact Info */}
-            <div className="space-y-6">
-              <p className="text-lg text-muted-foreground mb-8">
-                I'm always interested in hearing about new projects and opportunities. 
-                Feel free to reach out through any of these channels.
-              </p>
-
+          <div className="grid md:grid-cols-2 gap-8 items-start">
+            {/* Contact Info Cards */}
+            <div className="space-y-4">
               {contactInfo.map((info, index) => {
                 const Icon = info.icon;
                 return (
                   <Card
                     key={index}
-                    className="p-6 bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all"
+                    className="p-5 rounded-2xl bg-[#0D0F1A]/85 backdrop-blur-xl border border-white/[0.08] hover:border-cyan-500/40 transition-all duration-300 shadow-lg group hover:-translate-y-0.5"
                   >
                     <a
                       href={info.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-4 group"
+                      className="flex items-center gap-4"
                     >
-                      <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center group-hover:bg-primary/30 transition-colors">
-                        <Icon className="w-6 h-6 text-primary" />
+                      <div className="w-11 h-11 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors flex-shrink-0">
+                        <Icon className="w-5 h-5 text-cyan-400" />
                       </div>
                       <div>
-                        <p className="text-sm text-muted-foreground">{info.label}</p>
-                        <p className="text-foreground group-hover:text-primary transition-colors">
+                        <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">{info.label}</p>
+                        <p className="text-sm md:text-base text-zinc-200 group-hover:text-cyan-300 transition-colors font-medium">
                           {info.value}
                         </p>
                       </div>
@@ -145,24 +144,29 @@ const Contact = () => {
             </div>
 
             {/* Contact Form */}
-            <Card className="p-8 bg-card/50 backdrop-blur-sm border-border/50">
-              <form onSubmit={handleSubmit} className="space-y-6">
+            <Card className="p-8 md:p-10 rounded-3xl bg-[#0D0F1A]/85 backdrop-blur-xl border border-white/[0.08] shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-60" />
+
+              <h3 className="text-xl font-bold text-white mb-2">Send Direct Message</h3>
+              <p className="text-xs text-zinc-400 mb-6">Receive an instant auto-confirmation reply upon submission.</p>
+
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+                  <label htmlFor="name" className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">
                     Your Name
                   </label>
                   <Input
                     id="name"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="John Doe"
+                    placeholder="Enter your name"
                     required
-                    className="bg-muted/30 border-border/50 focus:border-primary"
+                    className="bg-white/[0.03] border-white/[0.1] focus:border-cyan-400 rounded-xl text-white placeholder:text-zinc-600 h-11"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+                  <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">
                     Your Email
                   </label>
                   <Input
@@ -170,31 +174,31 @@ const Contact = () => {
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="john@example.com"
+                    placeholder="name@company.com"
                     required
-                    className="bg-muted/30 border-border/50 focus:border-primary"
+                    className="bg-white/[0.03] border-white/[0.1] focus:border-cyan-400 rounded-xl text-white placeholder:text-zinc-600 h-11"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
-                    Tell me about the project
+                  <label htmlFor="message" className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">
+                    Project Details / Inquiry
                   </label>
                   <Textarea
                     id="message"
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="I'd like to discuss..."
+                    placeholder="Describe your project, team, or opportunity..."
                     required
-                    rows={5}
-                    className="bg-muted/30 border-border/50 focus:border-primary resize-none"
+                    rows={4}
+                    className="bg-white/[0.03] border-white/[0.1] focus:border-cyan-400 rounded-xl text-white placeholder:text-zinc-600 resize-none"
                   />
                 </div>
 
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-primary text-primary-foreground hover:shadow-glow transition-all group disabled:opacity-50"
+                  className="w-full h-11 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-semibold rounded-xl shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/35 transition-all group disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <>
